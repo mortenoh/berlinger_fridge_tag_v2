@@ -16,9 +16,11 @@ app = typer.Typer(help="Berlinger FridgeTag to DHIS2 CLI")
 @app.command()
 def search(
     file: Path = typer.Argument(..., help="Input FridgeTag file"),
+    debug: bool = typer.Option(False, "--debug", "-d", help="Show debug info (URLs, JSON)"),
 ) -> None:
     """Search for a tracked entity by parsing the serial from a FridgeTag file."""
     from rich.console import Console
+    from rich.syntax import Syntax
     from rich.table import Table
 
     console = Console()
@@ -34,6 +36,12 @@ def search(
         raise typer.Exit(1)
 
     console.print(f"Searching for serial: [cyan]{result.serial}[/cyan]")
+
+    if debug:
+        url = f"{service.client.base_url}/api/42/tracker/trackedEntities"
+        console.print(f"[dim]GET {url}[/dim]")
+        syntax = Syntax(result.tracked_entity.model_dump_json(indent=2), "json", theme="monokai")
+        console.print(syntax)
 
     table = Table(title="Tracked Entity")
     table.add_column("Field", style="bold")
@@ -54,9 +62,11 @@ def search(
 @app.command()
 def get_events(
     file: Path = typer.Argument(..., help="Input FridgeTag file"),
+    debug: bool = typer.Option(False, "--debug", "-d", help="Show debug info (URLs, JSON)"),
 ) -> None:
     """Get existing events for a tracked entity from a FridgeTag file."""
     from rich.console import Console
+    from rich.syntax import Syntax
     from rich.table import Table
 
     console = Console()
@@ -76,6 +86,12 @@ def get_events(
         else:
             console.print(f"Serial: {serial}, TrackedEntity: not found")
             return
+
+        if debug:
+            url = f"{service.client.base_url}/api/42/tracker/trackedEntities"
+            console.print(f"[dim]GET {url}[/dim]")
+            syntax = Syntax(result.model_dump_json(indent=2), "json", theme="monokai")
+            console.print(syntax)
 
         console.print(f"File records: {len(file_dates)} date(s)")
 
@@ -120,75 +136,91 @@ def enroll(
     pqs_code: str = typer.Option("", "--pqs-code", help="Appliance PQS code"),
     appliance_serial: str = typer.Option("", "--appliance-serial", help="Appliance manufacturer serial number"),
     dry_run: bool = typer.Option(False, "--dry-run", "-n", help="Show what would be done without making changes"),
+    debug: bool = typer.Option(False, "--debug", "-d", help="Show debug info (URLs, JSON)"),
 ) -> None:
     """Create tracked entity with enrollment from a FridgeTag file."""
     from datetime import date
 
+    from rich.console import Console
+    from rich.syntax import Syntax
+    from rich.table import Table
+
+    console = Console()
     service = DHIS2Service()
 
     try:
+        from .dhis2_client import DHIS2Client
+        from .dhis2_models import (
+            EnrollmentPayload,
+            TrackedEntitiesPayload,
+            TrackedEntityAttribute,
+            TrackedEntityPayload,
+        )
+
         data = service.parse_file(file)
         serial = service.get_serial(data)
-        typer.echo(f"Serial: {serial}")
+        console.print(f"Serial: [cyan]{serial}[/cyan]")
 
         # Check if already exists
+        already_exists = False
         try:
             tracked_entity = service.search_by_serial(serial)
-            typer.echo(f"TrackedEntity: {tracked_entity.trackedEntity} (already exists)")
-            typer.echo(f"OrgUnit: {tracked_entity.orgUnit}")
+            already_exists = True
+            console.print(
+                f"TrackedEntity: [cyan]{tracked_entity.trackedEntity}[/cyan] [yellow](already exists)[/yellow]"
+            )
+            console.print(f"OrgUnit: [cyan]{tracked_entity.orgUnit}[/cyan]")
 
             if tracked_entity.enrollments:
-                typer.echo(f"Enrollments: {len(tracked_entity.enrollments)}")
+                table = Table(title=f"Enrollments ({len(tracked_entity.enrollments)})")
+                table.add_column("Enrollment", style="cyan")
+                table.add_column("OrgUnit")
                 for enrollment in tracked_entity.enrollments:
-                    typer.echo(f"  - {enrollment.enrollment} (orgUnit: {enrollment.orgUnit})")
+                    table.add_row(enrollment.enrollment, enrollment.orgUnit)
+                console.print(table)
             else:
-                typer.echo("Enrollments: none")
-            return
+                console.print("Enrollments: [dim]none[/dim]")
 
         except TrackedEntityNotFoundError:
-            typer.echo("TrackedEntity: not found, will create")
+            console.print("TrackedEntity: [green]not found, will create[/green]")
 
         enrolled_at = date.today().isoformat()
 
-        if dry_run:
-            from .dhis2_client import DHIS2Client
-            from .dhis2_models import (
-                EnrollmentPayload,
-                TrackedEntitiesPayload,
-                TrackedEntityAttribute,
-                TrackedEntityPayload,
-            )
+        # Build payload for display or actual creation
+        attrs = [
+            TrackedEntityAttribute(attribute=DHIS2Client.MANUFACTURER_ATTRIBUTE_UID, value=manufacturer),
+            TrackedEntityAttribute(attribute=DHIS2Client.MODEL_ATTRIBUTE_UID, value=model),
+            TrackedEntityAttribute(attribute=DHIS2Client.PQS_CODE_ATTRIBUTE_UID, value=pqs_code),
+            TrackedEntityAttribute(attribute=DHIS2Client.APPLIANCE_SERIAL_ATTRIBUTE_UID, value=appliance_serial),
+            TrackedEntityAttribute(attribute=DHIS2Client.SERIAL_ATTRIBUTE_UID, value=str(serial)),
+        ]
 
-            attrs = [
-                TrackedEntityAttribute(attribute=DHIS2Client.MANUFACTURER_ATTRIBUTE_UID, value=manufacturer),
-                TrackedEntityAttribute(attribute=DHIS2Client.MODEL_ATTRIBUTE_UID, value=model),
-                TrackedEntityAttribute(attribute=DHIS2Client.PQS_CODE_ATTRIBUTE_UID, value=pqs_code),
-                TrackedEntityAttribute(attribute=DHIS2Client.APPLIANCE_SERIAL_ATTRIBUTE_UID, value=appliance_serial),
-                TrackedEntityAttribute(attribute=DHIS2Client.SERIAL_ATTRIBUTE_UID, value=str(serial)),
-            ]
+        enroll_payload = EnrollmentPayload(
+            program=DHIS2Client.PROGRAM_UID,
+            status="ACTIVE",
+            orgUnit=org_unit,
+            occurredAt=enrolled_at,
+            enrolledAt=enrolled_at,
+            attributes=attrs,
+            events=[],
+        )
 
-            enroll_payload = EnrollmentPayload(
-                program=DHIS2Client.PROGRAM_UID,
-                status="ACTIVE",
-                orgUnit=org_unit,
-                occurredAt=enrolled_at,
-                enrolledAt=enrolled_at,
-                attributes=attrs,
-                events=[],
-            )
+        te_payload = TrackedEntityPayload(
+            orgUnit=org_unit,
+            trackedEntityType=DHIS2Client.TRACKED_ENTITY_TYPE_UID,
+            attributes=attrs,
+            enrollments=[enroll_payload],
+        )
 
-            te_payload = TrackedEntityPayload(
-                orgUnit=org_unit,
-                trackedEntityType=DHIS2Client.TRACKED_ENTITY_TYPE_UID,
-                attributes=attrs,
-                enrollments=[enroll_payload],
-            )
+        payload = TrackedEntitiesPayload(trackedEntities=[te_payload])
 
-            payload = TrackedEntitiesPayload(trackedEntities=[te_payload])
+        if debug:
+            url = f"{service.client.base_url}/api/42/tracker"
+            console.print(f"\n[dim]POST {url}[/dim]")
+            syntax = Syntax(payload.model_dump_json(indent=2), "json", theme="monokai")
+            console.print(syntax)
 
-            typer.echo("")
-            typer.echo("[DRY RUN] Would POST to /api/42/tracker:")
-            typer.echo(payload.model_dump_json(indent=2))
+        if dry_run or already_exists:
             return
 
         # Create tracked entity with enrollment
@@ -204,24 +236,26 @@ def enroll(
 
         status = result.get("status", "UNKNOWN")
         if status == "OK":
-            typer.echo("Success! Created tracked entity with enrollment.")
+            console.print("[green]Success![/green] Created tracked entity with enrollment.")
         else:
-            typer.echo(f"Response status: {status}", err=True)
+            console.print(f"[red]Error: Response status: {status}[/red]", style="bold")
             raise typer.Exit(1)
 
     except NoSerialFoundError as e:
-        typer.echo(f"Error: {e}", err=True)
+        console.print(f"[red]Error: {e}[/red]", style="bold")
         raise typer.Exit(1)
 
 
 @app.command()
 def check_events(
     file: Path = typer.Argument(..., help="Input FridgeTag file"),
+    debug: bool = typer.Option(False, "--debug", "-d", help="Show debug info (URLs, JSON)"),
 ) -> None:
     """Check for duplicate events (same date) that may cause data issues."""
     from collections import defaultdict
 
     from rich.console import Console
+    from rich.syntax import Syntax
     from rich.table import Table
 
     console = Console()
@@ -238,6 +272,12 @@ def check_events(
         else:
             console.print(f"Serial: {serial}, TrackedEntity: not found")
             return
+
+        if debug:
+            url = f"{service.client.base_url}/api/42/tracker/trackedEntities"
+            console.print(f"[dim]GET {url}[/dim]")
+            syntax = Syntax(result.model_dump_json(indent=2), "json", theme="monokai")
+            console.print(syntax)
 
         console.print(f"Found {len(result.events)} existing event(s)")
 
@@ -274,10 +314,14 @@ def check_events(
 def create_events(
     file: Path = typer.Argument(..., help="Input FridgeTag file"),
     dry_run: bool = typer.Option(False, "--dry-run", "-n", help="Show what would be created without sending"),
+    debug: bool = typer.Option(False, "--debug", "-d", help="Show debug info (URLs, JSON)"),
 ) -> None:
     """Create DHIS2 events from a FridgeTag file (one per history record)."""
     from rich.console import Console
+    from rich.syntax import Syntax
     from rich.table import Table
+
+    from .dhis2_models import TrackerPayload
 
     console = Console()
     service = DHIS2Service()
@@ -332,19 +376,29 @@ def create_events(
         updates = sum(1 for e in events if e.event is not None)
         creates = len(events) - updates
 
+        # Show summary table
+        table = Table(title="Summary")
+        table.add_column("#", justify="right", style="dim")
+        table.add_column("Action", style="bold")
+        table.add_column("Date")
+        table.add_column("Event UID", style="cyan")
+
+        for i, event in enumerate(events, 1):
+            action = "[yellow]UPDATE[/yellow]" if event.event else "[green]CREATE[/green]"
+            table.add_row(str(i), action, event.occurredAt, event.event or "-")
+
+        console.print(table)
+        console.print(f"Total: [green]{creates} create[/green], [yellow]{updates} update[/yellow]")
+
+        # Show JSON payload only if debug
+        if debug:
+            payload = TrackerPayload(events=events)
+            url = f"{service.client.base_url}/api/42/tracker"
+            console.print(f"\n[dim]POST {url}[/dim]")
+            syntax = Syntax(payload.model_dump_json(indent=2, exclude_none=True), "json", theme="monokai")
+            console.print(syntax)
+
         if dry_run:
-            table = Table(title=f"[DRY RUN] Would process {len(events)} event(s)")
-            table.add_column("#", justify="right", style="dim")
-            table.add_column("Action", style="bold")
-            table.add_column("Date")
-            table.add_column("Event UID", style="cyan")
-
-            for i, event in enumerate(events, 1):
-                action = "[yellow]UPDATE[/yellow]" if event.event else "[green]CREATE[/green]"
-                table.add_row(str(i), action, event.occurredAt, event.event or "-")
-
-            console.print(table)
-            console.print(f"Summary: [green]{creates} create[/green], [yellow]{updates} update[/yellow]")
             return
 
         # Create/update events
