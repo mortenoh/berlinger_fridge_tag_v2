@@ -18,6 +18,10 @@ def search(
     file: Path = typer.Argument(..., help="Input FridgeTag file"),
 ) -> None:
     """Search for a tracked entity by parsing the serial from a FridgeTag file."""
+    from rich.console import Console
+    from rich.table import Table
+
+    console = Console()
     service = DHIS2Service()
 
     try:
@@ -29,18 +33,22 @@ def search(
         typer.echo(f"Error: {e}", err=True)
         raise typer.Exit(1)
 
-    # Print nicely formatted output
-    typer.echo(f"Searching for serial: {result.serial}")
-    typer.echo("")
-    typer.echo("Found tracked entity:")
-    typer.echo(f"  Serial:          {result.serial}")
-    typer.echo(f"  TrackedEntity:   {result.tracked_entity.trackedEntity}")
-    typer.echo(f"  OrgUnit:         {result.tracked_entity.orgUnit}")
+    console.print(f"Searching for serial: [cyan]{result.serial}[/cyan]")
+
+    table = Table(title="Tracked Entity")
+    table.add_column("Field", style="bold")
+    table.add_column("Value", style="cyan")
+
+    table.add_row("Serial", str(result.serial))
+    table.add_row("TrackedEntity", result.tracked_entity.trackedEntity)
+    table.add_row("OrgUnit", result.tracked_entity.orgUnit)
 
     if result.tracked_entity.enrollments:
         enrollment = result.tracked_entity.enrollments[0]
-        typer.echo(f"  Enrollment:      {enrollment.enrollment}")
-        typer.echo(f"  Enrollment Org:  {enrollment.orgUnit}")
+        table.add_row("Enrollment", enrollment.enrollment)
+        table.add_row("Enrollment Org", enrollment.orgUnit)
+
+    console.print(table)
 
 
 @app.command()
@@ -48,6 +56,10 @@ def get_events(
     file: Path = typer.Argument(..., help="Input FridgeTag file"),
 ) -> None:
     """Get existing events for a tracked entity from a FridgeTag file."""
+    from rich.console import Console
+    from rich.table import Table
+
+    console = Console()
     service = DHIS2Service()
 
     try:
@@ -60,20 +72,22 @@ def get_events(
         result = service.client.get_events(serial)
 
         if result.trackedEntity:
-            typer.echo(f"Serial: {serial}, TrackedEntity: {result.trackedEntity}")
+            console.print(f"Serial: {serial}, TrackedEntity: {result.trackedEntity}")
         else:
-            typer.echo(f"Serial: {serial}, TrackedEntity: not found")
+            console.print(f"Serial: {serial}, TrackedEntity: not found")
             return
 
-        typer.echo(f"File records: {len(file_dates)} date(s)")
+        console.print(f"File records: {len(file_dates)} date(s)")
 
         # Track which file dates have been matched
-        matched_file_dates = set()
+        matched_file_dates: set[str] = set()
 
-        typer.echo("")
-        # Print table header
-        typer.echo(f"{'UID':<15} {'Date':<12} {'Status':<10} {'Match':<8}")
-        typer.echo("-" * 48)
+        # Build table
+        table = Table(title=f"Events ({len(result.events)})")
+        table.add_column("UID", style="cyan")
+        table.add_column("Date")
+        table.add_column("Status")
+        table.add_column("Match", style="green")
 
         for event in result.events:
             date = event.occurredAt[:10] if len(event.occurredAt) >= 10 else event.occurredAt
@@ -82,15 +96,15 @@ def get_events(
                 matched_file_dates.add(date)
             else:
                 match = "-"
-            typer.echo(f"{event.event:<15} {date:<12} {event.status:<10} {match:<8}")
+            table.add_row(event.event, date, event.status, match)
 
-        typer.echo("")
-        typer.echo(f"Total: {len(result.events)} event(s)")
+        console.print(table)
 
         # Show unmatched file dates
         unmatched_file_dates = file_dates - matched_file_dates
         if unmatched_file_dates:
-            typer.echo(f"Unmatched file dates ({len(unmatched_file_dates)}): {', '.join(sorted(unmatched_file_dates))}")
+            dates_str = ", ".join(sorted(unmatched_file_dates))
+            console.print(f"[yellow]Unmatched file dates ({len(unmatched_file_dates)}): {dates_str}[/yellow]")
 
     except NoSerialFoundError as e:
         typer.echo(f"Error: {e}", err=True)
@@ -207,6 +221,10 @@ def check_events(
     """Check for duplicate events (same date) that may cause data issues."""
     from collections import defaultdict
 
+    from rich.console import Console
+    from rich.table import Table
+
+    console = Console()
     service = DHIS2Service()
 
     try:
@@ -216,12 +234,12 @@ def check_events(
         result = service.client.get_events(serial)
 
         if result.trackedEntity:
-            typer.echo(f"Serial: {serial}, TrackedEntity: {result.trackedEntity}")
+            console.print(f"Serial: {serial}, TrackedEntity: {result.trackedEntity}")
         else:
-            typer.echo(f"Serial: {serial}, TrackedEntity: not found")
+            console.print(f"Serial: {serial}, TrackedEntity: not found")
             return
 
-        typer.echo(f"Found {len(result.events)} existing event(s)")
+        console.print(f"Found {len(result.events)} existing event(s)")
 
         # Group events by date
         events_by_date: dict[str, list[str]] = defaultdict(list)
@@ -233,15 +251,19 @@ def check_events(
         duplicates = {date: uids for date, uids in events_by_date.items() if len(uids) > 1}
 
         if duplicates:
-            typer.echo("")
-            typer.echo("Duplicate dates found:")
+            table = Table(title="Duplicate Events")
+            table.add_column("Date", style="yellow")
+            table.add_column("Count", justify="right")
+            table.add_column("Event UIDs", style="cyan")
+
             for date in sorted(duplicates.keys()):
                 uids = duplicates[date]
-                typer.echo(f"  {date}: {len(uids)} events ({', '.join(uids)})")
-            typer.echo("")
-            typer.echo(f"Warning: {len(duplicates)} date(s) have duplicate events")
+                table.add_row(date, str(len(uids)), ", ".join(uids))
+
+            console.print(table)
+            console.print(f"[yellow]Warning: {len(duplicates)} date(s) have duplicate events[/yellow]")
         else:
-            typer.echo("No duplicate dates found.")
+            console.print("[green]No duplicate dates found.[/green]")
 
     except NoSerialFoundError as e:
         typer.echo(f"Error: {e}", err=True)
@@ -254,18 +276,21 @@ def create_events(
     dry_run: bool = typer.Option(False, "--dry-run", "-n", help="Show what would be created without sending"),
 ) -> None:
     """Create DHIS2 events from a FridgeTag file (one per history record)."""
+    from rich.console import Console
+    from rich.table import Table
+
+    console = Console()
     service = DHIS2Service()
 
     try:
         # Parse file and get serial
         data = service.parse_file(file)
         serial = service.get_serial(data)
-        typer.echo(f"Processing serial: {serial}")
-        typer.echo(f"Found {len(data.history.records)} history record(s)")
+        console.print(f"Serial: [cyan]{serial}[/cyan], Records: {len(data.history.records)}")
 
         # Search for tracked entity
         tracked_entity = service.search_by_serial(serial)
-        typer.echo(f"Found tracked entity: {tracked_entity.trackedEntity}")
+        console.print(f"TrackedEntity: [cyan]{tracked_entity.trackedEntity}[/cyan]")
 
         # Fetch existing events and create date -> event UID mapping
         existing_result = service.client.get_events(serial)
@@ -282,10 +307,12 @@ def create_events(
         for dup_date in duplicate_dates:
             existing_events.pop(dup_date, None)
 
-        typer.echo(f"Found {len(existing_result.events)} existing event(s)")
+        console.print(f"Existing events: {len(existing_result.events)}")
         if duplicate_dates:
             dup_list = ", ".join(sorted(duplicate_dates))
-            typer.echo(f"Warning: {len(duplicate_dates)} date(s) have duplicates, will create new: {dup_list}")
+            console.print(
+                f"[yellow]Warning: {len(duplicate_dates)} date(s) have duplicates, will create new: {dup_list}[/yellow]"
+            )
 
         # Build events for all history records
         events = service.build_events(tracked_entity, data, existing_events=existing_events)
@@ -295,31 +322,38 @@ def create_events(
         creates = len(events) - updates
 
         if dry_run:
-            typer.echo(f"\n[DRY RUN] Would process {len(events)} event(s): {creates} create, {updates} update")
+            table = Table(title=f"[DRY RUN] Would process {len(events)} event(s)")
+            table.add_column("#", justify="right", style="dim")
+            table.add_column("Action", style="bold")
+            table.add_column("Date")
+            table.add_column("Event UID", style="cyan")
+
             for i, event in enumerate(events, 1):
-                action = "UPDATE" if event.event else "CREATE"
-                typer.echo(f"\n--- Event {i} ({action}, date: {event.occurredAt}) ---")
-                typer.echo(event.model_dump_json(indent=2, exclude_none=True))
+                action = "[yellow]UPDATE[/yellow]" if event.event else "[green]CREATE[/green]"
+                table.add_row(str(i), action, event.occurredAt, event.event or "-")
+
+            console.print(table)
+            console.print(f"Summary: [green]{creates} create[/green], [yellow]{updates} update[/yellow]")
             return
 
         # Create/update events
-        typer.echo(f"Processing {len(events)} event(s): {creates} create, {updates} update...")
+        console.print(f"Processing {len(events)} event(s): {creates} create, {updates} update...")
         result = service.create_events(events)
 
     except NoSerialFoundError as e:
-        typer.echo(f"Error: {e}", err=True)
+        console.print(f"[red]Error: {e}[/red]", style="bold")
         raise typer.Exit(1)
     except TrackedEntityNotFoundError as e:
-        typer.echo(f"Error: {e}", err=True)
+        console.print(f"[red]Error: {e}[/red]", style="bold")
         raise typer.Exit(1)
     except NoEnrollmentFoundError as e:
-        typer.echo(f"Error: {e}", err=True)
+        console.print(f"[red]Error: {e}[/red]", style="bold")
         raise typer.Exit(1)
 
     if result.status == "OK":
-        typer.echo(f"Success! Processed {len(events)} event(s): {creates} created, {updates} updated")
+        console.print(f"[green]Success![/green] Processed {len(events)} event(s): {creates} created, {updates} updated")
     else:
-        typer.echo(f"Response status: {result.status}", err=True)
+        console.print(f"[red]Error: Response status: {result.status}[/red]", style="bold")
         raise typer.Exit(1)
 
 
