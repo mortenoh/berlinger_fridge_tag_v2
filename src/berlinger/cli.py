@@ -44,7 +44,7 @@ def search(
 
 
 @app.command()
-def create_event(
+def create_events(
     file: Path = typer.Argument(..., help="Input FridgeTag file"),
     dry_run: bool = typer.Option(False, "--dry-run", "-n", help="Show what would be created without sending"),
 ) -> None:
