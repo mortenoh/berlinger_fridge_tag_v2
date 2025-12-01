@@ -201,6 +201,54 @@ def enroll(
 
 
 @app.command()
+def check_events(
+    file: Path = typer.Argument(..., help="Input FridgeTag file"),
+) -> None:
+    """Check for duplicate events (same date) that may cause data issues."""
+    from collections import defaultdict
+
+    service = DHIS2Service()
+
+    try:
+        data = service.parse_file(file)
+        serial = service.get_serial(data)
+
+        result = service.client.get_events(serial)
+
+        if result.trackedEntity:
+            typer.echo(f"Serial: {serial}, TrackedEntity: {result.trackedEntity}")
+        else:
+            typer.echo(f"Serial: {serial}, TrackedEntity: not found")
+            return
+
+        typer.echo(f"Found {len(result.events)} existing event(s)")
+
+        # Group events by date
+        events_by_date: dict[str, list[str]] = defaultdict(list)
+        for ev in result.events:
+            date = ev.occurredAt[:10] if len(ev.occurredAt) >= 10 else ev.occurredAt
+            events_by_date[date].append(ev.event)
+
+        # Find duplicates
+        duplicates = {date: uids for date, uids in events_by_date.items() if len(uids) > 1}
+
+        if duplicates:
+            typer.echo("")
+            typer.echo("Duplicate dates found:")
+            for date in sorted(duplicates.keys()):
+                uids = duplicates[date]
+                typer.echo(f"  {date}: {len(uids)} events ({', '.join(uids)})")
+            typer.echo("")
+            typer.echo(f"Warning: {len(duplicates)} date(s) have duplicate events")
+        else:
+            typer.echo("No duplicate dates found.")
+
+    except NoSerialFoundError as e:
+        typer.echo(f"Error: {e}", err=True)
+        raise typer.Exit(1)
+
+
+@app.command()
 def create_events(
     file: Path = typer.Argument(..., help="Input FridgeTag file"),
     dry_run: bool = typer.Option(False, "--dry-run", "-n", help="Show what would be created without sending"),
