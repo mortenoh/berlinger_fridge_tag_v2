@@ -1,0 +1,155 @@
+token literal names:
+null
+'Device'
+'Vers'
+'Fw Vers'
+'Sensor'
+'Conf'
+'Hist'
+'Cert'
+'Errors'
+'Serial'
+'PCB'
+'CID'
+'Lot'
+'Zone'
+'Measurement delay'
+'Moving Avrg'
+'User Alarm Config'
+'User Clock Config'
+'Alarm Indication'
+'Temp unit'
+'Alarm'
+'Int Sensor'
+'Timeout'
+'Offset'
+'Report history length'
+'Det Report'
+'Use ext devices'
+'Test Res'
+'Test TS'
+'TS Actv'
+'TS Report Creation'
+'Date'
+'Min T'
+'Max T'
+'Avrg T'
+'TS Min T'
+'TS Max T'
+'Int Sensor timeout'
+'Events'
+'Checked'
+'TS AM'
+'TS PM'
+'T AL'
+'t AL'
+'t Acc'
+'TS A'
+'C A'
+'t AccST'
+'Err Count'
+'Err TS'
+'Issuer'
+'Valid from'
+'Owner'
+'Public Key'
+'Sig Cert'
+'Sig'
+'---'
+'&'
+':'
+','
+'.'
+null
+null
+null
+null
+null
+null
+null
+null
+
+token symbolic names:
+null
+DEVICE
+VERSION
+FW_VERSION
+SENSOR_COUNT
+CONFIG
+HISTORY
+CERTIFICATE
+ERRORS
+SERIAL
+PCB
+CID
+LOT
+ZONE
+MEASUREMENT_DELAY
+MOVING_AVERAGE
+USER_ALARM_CONFIG
+USER_CLOCK_CONFIG
+ALARM_INDICATION
+TEMP_UNIT
+ALARM
+INTERNAL_SENSOR
+TIMEOUT
+OFFSET
+REPORT_HISTORY_LENGTH
+DETAILED_REPORT
+USE_EXTERNAL_DEVICES
+TEST_RESULT
+TEST_TIMESTAMP
+ACTIVATION_TIMESTAMP
+REPORT_CREATION_TIMESTAMP
+DATE_KEY
+MIN_TEMP
+MAX_TEMP
+AVG_TEMP
+MIN_TEMP_TIMESTAMP
+MAX_TEMP_TIMESTAMP
+SENSOR_TIMEOUT
+EVENTS
+CHECKED
+AM_TIMESTAMP
+PM_TIMESTAMP
+TEMP_THRESHOLD
+DURATION_THRESHOLD
+ACCUMULATED_TIME
+ALARM_TIMESTAMP
+ALARM_COUNT
+ACCUMULATED_SENSOR_TIMEOUT
+ERROR_COUNT
+ERROR_TIMESTAMP
+ISSUER
+VALID_FROM
+OWNER
+PUBLIC_KEY
+SIGNATURE_CERT
+SIGNATURE
+MISSING
+AMPERSAND
+COLON
+COMMA
+DOT
+SIGN
+DATETIME
+DATE
+TIME
+HEX
+INT
+ID
+WS
+
+rule names:
+line
+entry
+key
+knownKey
+value
+temperature
+textValue
+textPart
+
+
+atn:
+[4, 1, 68, 70, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 7, 4, 2, 5, 7, 5, 2, 6, 7, 6, 2, 7, 7, 7, 1, 0, 1, 0, 1, 0, 5, 0, 20, 8, 0, 10, 0, 12, 0, 23, 9, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 3, 1, 30, 8, 1, 1, 2, 1, 2, 1, 2, 4, 2, 35, 8, 2, 11, 2, 12, 2, 36, 3, 2, 39, 8, 2, 1, 3, 1, 3, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 3, 4, 50, 8, 4, 1, 5, 3, 5, 53, 8, 5, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 3, 5, 61, 8, 5, 1, 6, 4, 6, 64, 8, 6, 11, 6, 12, 6, 65, 1, 7, 1, 7, 1, 7, 0, 0, 8, 0, 2, 4, 6, 8, 10, 12, 14, 0, 2, 1, 0, 1, 55, 3, 0, 57, 57, 60, 61, 66, 67, 76, 0, 16, 1, 0, 0, 0, 2, 26, 1, 0, 0, 0, 4, 38, 1, 0, 0, 0, 6, 40, 1, 0, 0, 0, 8, 49, 1, 0, 0, 0, 10, 60, 1, 0, 0, 0, 12, 63, 1, 0, 0, 0, 14, 67, 1, 0, 0, 0, 16, 21, 3, 2, 1, 0, 17, 18, 5, 59, 0, 0, 18, 20, 3, 2, 1, 0, 19, 17, 1, 0, 0, 0, 20, 23, 1, 0, 0, 0, 21, 19, 1, 0, 0, 0, 21, 22, 1, 0, 0, 0, 22, 24, 1, 0, 0, 0, 23, 21, 1, 0, 0, 0, 24, 25, 5, 0, 0, 1, 25, 1, 1, 0, 0, 0, 26, 27, 3, 4, 2, 0, 27, 29, 5, 58, 0, 0, 28, 30, 3, 8, 4, 0, 29, 28, 1, 0, 0, 0, 29, 30, 1, 0, 0, 0, 30, 3, 1, 0, 0, 0, 31, 39, 3, 6, 3, 0, 32, 39, 5, 66, 0, 0, 33, 35, 5, 67, 0, 0, 34, 33, 1, 0, 0, 0, 35, 36, 1, 0, 0, 0, 36, 34, 1, 0, 0, 0, 36, 37, 1, 0, 0, 0, 37, 39, 1, 0, 0, 0, 38, 31, 1, 0, 0, 0, 38, 32, 1, 0, 0, 0, 38, 34, 1, 0, 0, 0, 39, 5, 1, 0, 0, 0, 40, 41, 7, 0, 0, 0, 41, 7, 1, 0, 0, 0, 42, 50, 3, 10, 5, 0, 43, 50, 5, 62, 0, 0, 44, 50, 5, 63, 0, 0, 45, 50, 5, 64, 0, 0, 46, 50, 5, 66, 0, 0, 47, 50, 5, 65, 0, 0, 48, 50, 3, 12, 6, 0, 49, 42, 1, 0, 0, 0, 49, 43, 1, 0, 0, 0, 49, 44, 1, 0, 0, 0, 49, 45, 1, 0, 0, 0, 49, 46, 1, 0, 0, 0, 49, 47, 1, 0, 0, 0, 49, 48, 1, 0, 0, 0, 50, 9, 1, 0, 0, 0, 51, 53, 5, 61, 0, 0, 52, 51, 1, 0, 0, 0, 52, 53, 1, 0, 0, 0, 53, 54, 1, 0, 0, 0, 54, 55, 5, 66, 0, 0, 55, 56, 5, 60, 0, 0, 56, 61, 5, 66, 0, 0, 57, 58, 5, 61, 0, 0, 58, 61, 5, 66, 0, 0, 59, 61, 5, 56, 0, 0, 60, 52, 1, 0, 0, 0, 60, 57, 1, 0, 0, 0, 60, 59, 1, 0, 0, 0, 61, 11, 1, 0, 0, 0, 62, 64, 3, 14, 7, 0, 63, 62, 1, 0, 0, 0, 64, 65, 1, 0, 0, 0, 65, 63, 1, 0, 0, 0, 65, 66, 1, 0, 0, 0, 66, 13, 1, 0, 0, 0, 67, 68, 7, 1, 0, 0, 68, 15, 1, 0, 0, 0, 8, 21, 29, 36, 38, 49, 52, 60, 65]

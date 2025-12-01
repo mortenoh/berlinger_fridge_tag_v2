@@ -10,9 +10,6 @@ venv/
 dist/
 build/
 
-# Generated ANTLR files
-generated/
-
 # Node
 node_modules/
 package-lock.json
