@@ -25,7 +25,7 @@ class Event(BaseModel):
     event: str | None = None  # Event UID (set when updating existing event)
     orgUnit: str
     occurredAt: str
-    status: EventStatus = EventStatus.ACTIVE
+    status: EventStatus = EventStatus.COMPLETED
     program: str
     programStage: str
     trackedEntity: str

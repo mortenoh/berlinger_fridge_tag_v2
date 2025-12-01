@@ -154,7 +154,7 @@ class DHIS2Service:
         self,
         tracked_entity: TrackedEntityResult,
         record: HistoryRecord,
-        status: EventStatus = EventStatus.ACTIVE,
+        status: EventStatus = EventStatus.COMPLETED,
         event_uid: str | None = None,
     ) -> Event:
         """Build an event from a single history record.
@@ -240,7 +240,7 @@ class DHIS2Service:
         self,
         tracked_entity: TrackedEntityResult,
         data: FridgeTagData,
-        status: EventStatus = EventStatus.ACTIVE,
+        status: EventStatus = EventStatus.COMPLETED,
         existing_events: dict[str, str] | None = None,
     ) -> list[Event]:
         """Build events for all history records.
@@ -332,7 +332,7 @@ class DHIS2Service:
     def create_events_from_file(
         self,
         file_path: str | Path,
-        status: EventStatus = EventStatus.ACTIVE,
+        status: EventStatus = EventStatus.COMPLETED,
     ) -> CreateEventResult:
         """Create events from a FridgeTag file (one per history record).
 

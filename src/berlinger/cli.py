@@ -6,6 +6,7 @@ import typer
 from dotenv import load_dotenv
 
 from .dhis2_client import TrackedEntityNotFoundError
+from .dhis2_models import EventStatus
 from .dhis2_service import DHIS2Service, NoEnrollmentFoundError, NoSerialFoundError
 
 load_dotenv()
@@ -340,6 +341,7 @@ def check_events(
 @app.command()
 def create_events(
     file: Path = typer.Argument(..., help="Input FridgeTag file"),
+    status: str = typer.Option("COMPLETED", "--status", "-s", help="Event status (ACTIVE or COMPLETED)"),
     dry_run: bool = typer.Option(False, "--dry-run", "-n", help="Show what would be created without sending"),
     debug: bool = typer.Option(False, "--debug", "-d", help="Show debug info (URLs, JSON)"),
 ) -> None:
@@ -397,7 +399,8 @@ def create_events(
                 console.print(f"[dim]Note: {len(unaffected)} duplicate date(s) not in input: {dup_list}[/dim]")
 
         # Build events for all history records
-        events = service.build_events(tracked_entity, data, existing_events=existing_events)
+        event_status = EventStatus(status.upper())
+        events = service.build_events(tracked_entity, data, status=event_status, existing_events=existing_events)
 
         # Count updates vs creates
         updates = sum(1 for e in events if e.event is not None)
