@@ -43,11 +43,17 @@ lint:
 	@echo ">>> Formatting and linting"
 	@uv run ruff format .
 	@uv run ruff check . --fix
+	@echo ">>> Running mypy"
+	@uv run mypy src/berlinger
+	@echo ">>> Running pyright"
+	@uv run pyright
 
 check:
 	@echo ">>> Checking code"
 	@uv run ruff check .
 	@uv run ruff format --check .
+	@uv run mypy src/berlinger
+	@uv run pyright
 
 build:
 	@echo ">>> Parsing input files to JSON"

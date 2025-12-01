@@ -1,6 +1,7 @@
 """DHIS2 Tracker API client."""
 
 import os
+from typing import Any
 
 import httpx
 
@@ -76,7 +77,7 @@ class DHIS2Client:
             enrollments=enrollments,
         )
 
-    def create_event(self, event: Event) -> dict:
+    def create_event(self, event: Event) -> dict[str, Any]:
         """Create a new event in the tracker.
 
         Args:
@@ -97,4 +98,5 @@ class DHIS2Client:
                 headers={"Content-Type": "application/json"},
             )
             response.raise_for_status()
-            return response.json()
+            result: dict[str, Any] = response.json()
+            return result

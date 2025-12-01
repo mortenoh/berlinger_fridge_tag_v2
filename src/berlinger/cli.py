@@ -5,10 +5,10 @@ from pathlib import Path
 import typer
 from dotenv import load_dotenv
 
-load_dotenv()
-
 from .dhis2_client import TrackedEntityNotFoundError
 from .dhis2_service import DHIS2Service, NoEnrollmentFoundError, NoSerialFoundError
+
+load_dotenv()
 
 app = typer.Typer(help="Berlinger FridgeTag to DHIS2 CLI")
 
@@ -16,7 +16,7 @@ app = typer.Typer(help="Berlinger FridgeTag to DHIS2 CLI")
 @app.command()
 def search(
     file: Path = typer.Argument(..., help="Input FridgeTag file"),
-):
+) -> None:
     """Search for a tracked entity by parsing the serial from a FridgeTag file."""
     service = DHIS2Service()
 
@@ -47,7 +47,7 @@ def search(
 def create_event(
     file: Path = typer.Argument(..., help="Input FridgeTag file"),
     dry_run: bool = typer.Option(False, "--dry-run", "-n", help="Show what would be created without sending"),
-):
+) -> None:
     """Create DHIS2 events from a FridgeTag file (one per history record)."""
     service = DHIS2Service()
 

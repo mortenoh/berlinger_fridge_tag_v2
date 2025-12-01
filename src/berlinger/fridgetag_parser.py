@@ -14,7 +14,7 @@ from __future__ import annotations
 
 import sys
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 from antlr4 import CommonTokenStream, InputStream
 from pydantic import BaseModel, Field
@@ -174,10 +174,10 @@ class LineVisitor(BerlingerFridgeTagVisitor):
             if comma_pos >= 0:
                 return rest[:comma_pos].strip()
             return rest.strip()
-        return ctx.value().getText()
+        return cast(str, ctx.value().getText())
 
     def visitTempVal(self, ctx: BerlingerFridgeTagParser.TempValContext) -> float | None:
-        return self.visit(ctx.temperature())
+        return cast(float | None, self.visit(ctx.temperature()))
 
     def visitTempNumber(self, ctx: BerlingerFridgeTagParser.TempNumberContext) -> float:
         return float(ctx.getText())
@@ -189,22 +189,22 @@ class LineVisitor(BerlingerFridgeTagVisitor):
         return None
 
     def visitDateTimeVal(self, ctx: BerlingerFridgeTagParser.DateTimeValContext) -> str:
-        return ctx.DATETIME().getText()
+        return cast(str, ctx.DATETIME().getText())
 
     def visitDateVal(self, ctx: BerlingerFridgeTagParser.DateValContext) -> str:
-        return ctx.DATE().getText()
+        return cast(str, ctx.DATE().getText())
 
     def visitTimeVal(self, ctx: BerlingerFridgeTagParser.TimeValContext) -> str:
-        return ctx.TIME().getText()
+        return cast(str, ctx.TIME().getText())
 
     def visitIntVal(self, ctx: BerlingerFridgeTagParser.IntValContext) -> int:
         return int(ctx.INT().getText())
 
     def visitHexVal(self, ctx: BerlingerFridgeTagParser.HexValContext) -> str:
-        return ctx.HEX().getText()
+        return cast(str, ctx.HEX().getText())
 
     def visitTextVal(self, ctx: BerlingerFridgeTagParser.TextValContext) -> str:
-        return ctx.getText()
+        return cast(str, ctx.getText())
 
 
 # =============================================================================
@@ -324,7 +324,7 @@ class FridgeTagParser:
     def _set_value(
         self,
         section: str,
-        key: str,
+        key: str | int,
         value: Any,
         hist_record: HistoryRecord | None,
         alarm_section: str | None,

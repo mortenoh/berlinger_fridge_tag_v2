@@ -1,10 +1,9 @@
 """Service layer for DHIS2 integration."""
 
 from dataclasses import dataclass
-from datetime import date
 from pathlib import Path
 
-from .dhis2_client import DHIS2Client, TrackedEntityNotFoundError
+from .dhis2_client import DHIS2Client
 from .dhis2_models import DataValue, Event, EventStatus, TrackedEntityResult
 from .fridgetag_parser import FridgeTagData, FridgeTagParser, HistoryRecord
 
@@ -307,17 +306,15 @@ class DHIS2Service:
             event_uid=event_uid,
         )
 
-    def create_event_from_file(
+    def create_events_from_file(
         self,
         file_path: str | Path,
-        occurred_at: date | None = None,
         status: EventStatus = EventStatus.ACTIVE,
     ) -> CreateEventResult:
-        """Create an event from a FridgeTag file.
+        """Create events from a FridgeTag file (one per history record).
 
         Args:
             file_path: Path to the FridgeTag file.
-            occurred_at: Date the event occurred (defaults to report creation date or today).
             status: Event status (defaults to ACTIVE).
 
         Returns:
@@ -331,10 +328,5 @@ class DHIS2Service:
         data = self.parse_file(file_path)
         serial = self.get_serial(data)
         tracked_entity = self.client.search_tracked_entity(serial)
-        event = self.build_event(
-            tracked_entity=tracked_entity,
-            data=data,
-            occurred_at=occurred_at,
-            status=status,
-        )
-        return self.create_event(event)
+        events = self.build_events(tracked_entity, data, status)
+        return self.create_events(events)
