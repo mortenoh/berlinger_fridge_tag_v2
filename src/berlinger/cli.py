@@ -38,8 +38,17 @@ def search(
     console.print(f"Searching for serial: [cyan]{result.serial}[/cyan]")
 
     if debug:
+        from .dhis2_client import DHIS2Client
+
         url = f"{service.client.base_url}/api/42/tracker/trackedEntities"
-        console.print(f"[dim]GET {url}[/dim]")
+        params = {
+            "filter": f"{DHIS2Client.SERIAL_ATTRIBUTE_UID}:like:{result.serial}",
+            "fields": "trackedEntity,orgUnit,enrollments[enrollment,orgUnit]",
+            "program": DHIS2Client.PROGRAM_UID,
+            "orgUnitMode": "ACCESSIBLE",
+        }
+        params_str = "&".join(f"{k}={v}" for k, v in params.items())
+        console.print(f"[dim]GET {url}?{params_str}[/dim]")
         syntax = Syntax(result.tracked_entity.model_dump_json(indent=2), "json", theme="monokai")
         console.print(syntax)
 
@@ -88,8 +97,17 @@ def get_events(
             return
 
         if debug:
+            from .dhis2_client import DHIS2Client
+
             url = f"{service.client.base_url}/api/42/tracker/trackedEntities"
-            console.print(f"[dim]GET {url}[/dim]")
+            params = {
+                "filter": f"{DHIS2Client.SERIAL_ATTRIBUTE_UID}:like:{serial}",
+                "fields": "trackedEntity,enrollments[enrollment,events[event,occurredAt,status,programStage]]",
+                "program": DHIS2Client.PROGRAM_UID,
+                "orgUnitMode": "ACCESSIBLE",
+            }
+            params_str = "&".join(f"{k}={v}" for k, v in params.items())
+            console.print(f"[dim]GET {url}?{params_str}[/dim]")
             syntax = Syntax(result.model_dump_json(indent=2), "json", theme="monokai")
             console.print(syntax)
 
@@ -215,7 +233,7 @@ def enroll(
         payload = TrackedEntitiesPayload(trackedEntities=[te_payload])
 
         if debug:
-            url = f"{service.client.base_url}/api/42/tracker"
+            url = f"{service.client.base_url}/api/42/tracker?async=false"
             console.print(f"\n[dim]POST {url}[/dim]")
             syntax = Syntax(payload.model_dump_json(indent=2), "json", theme="monokai")
             console.print(syntax)
@@ -274,8 +292,17 @@ def check_events(
             return
 
         if debug:
+            from .dhis2_client import DHIS2Client
+
             url = f"{service.client.base_url}/api/42/tracker/trackedEntities"
-            console.print(f"[dim]GET {url}[/dim]")
+            params = {
+                "filter": f"{DHIS2Client.SERIAL_ATTRIBUTE_UID}:like:{serial}",
+                "fields": "trackedEntity,enrollments[enrollment,events[event,occurredAt,status,programStage]]",
+                "program": DHIS2Client.PROGRAM_UID,
+                "orgUnitMode": "ACCESSIBLE",
+            }
+            params_str = "&".join(f"{k}={v}" for k, v in params.items())
+            console.print(f"[dim]GET {url}?{params_str}[/dim]")
             syntax = Syntax(result.model_dump_json(indent=2), "json", theme="monokai")
             console.print(syntax)
 
@@ -393,7 +420,7 @@ def create_events(
         # Show JSON payload only if debug
         if debug:
             payload = TrackerPayload(events=events)
-            url = f"{service.client.base_url}/api/42/tracker"
+            url = f"{service.client.base_url}/api/42/tracker?async=false"
             console.print(f"\n[dim]POST {url}[/dim]")
             syntax = Syntax(payload.model_dump_json(indent=2, exclude_none=True), "json", theme="monokai")
             console.print(syntax)
