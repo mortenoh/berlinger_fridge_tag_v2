@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from .dhis2_client import DHIS2Client
-from .dhis2_models import DataValue, Event, EventStatus, TrackedEntityResult
+from .dhis2_models import DataValue, Event, EventsResult, EventStatus, TrackedEntityResult
 from .fridgetag_parser import FridgeTagData, FridgeTagParser, HistoryRecord
 
 
@@ -102,6 +102,22 @@ class DHIS2Service:
             TrackedEntityNotFoundError: If no tracked entity is found.
         """
         return self.client.search_tracked_entity(serial)
+
+    def get_events_by_file(self, file_path: str | Path) -> EventsResult:
+        """Get events for a tracked entity by parsing a FridgeTag file.
+
+        Args:
+            file_path: Path to the FridgeTag file.
+
+        Returns:
+            EventsResult with tracked entity UID and events.
+
+        Raises:
+            NoSerialFoundError: If no serial number is found in file.
+        """
+        data = self.parse_file(file_path)
+        serial = self.get_serial(data)
+        return self.client.get_events(serial)
 
     def _minutes_to_hhmm(self, minutes: int) -> str:
         """Convert minutes to hh:mm format."""

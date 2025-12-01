@@ -44,6 +44,60 @@ def search(
 
 
 @app.command()
+def get_events(
+    file: Path = typer.Argument(..., help="Input FridgeTag file"),
+) -> None:
+    """Get existing events for a tracked entity from a FridgeTag file."""
+    service = DHIS2Service()
+
+    try:
+        data = service.parse_file(file)
+        serial = service.get_serial(data)
+
+        # Get dates from the input file
+        file_dates = {record.date for record in data.history.records}
+
+        result = service.client.get_events(serial)
+
+        if result.trackedEntity:
+            typer.echo(f"Serial: {serial}, TrackedEntity: {result.trackedEntity}")
+        else:
+            typer.echo(f"Serial: {serial}, TrackedEntity: not found")
+            return
+
+        typer.echo(f"File records: {len(file_dates)} date(s)")
+
+        # Track which file dates have been matched
+        matched_file_dates = set()
+
+        typer.echo("")
+        # Print table header
+        typer.echo(f"{'UID':<15} {'Date':<12} {'Status':<10} {'Match':<8}")
+        typer.echo("-" * 48)
+
+        for event in result.events:
+            date = event.occurredAt[:10] if len(event.occurredAt) >= 10 else event.occurredAt
+            if date in file_dates:
+                match = "yes"
+                matched_file_dates.add(date)
+            else:
+                match = "-"
+            typer.echo(f"{event.event:<15} {date:<12} {event.status:<10} {match:<8}")
+
+        typer.echo("")
+        typer.echo(f"Total: {len(result.events)} event(s)")
+
+        # Show unmatched file dates
+        unmatched_file_dates = file_dates - matched_file_dates
+        if unmatched_file_dates:
+            typer.echo(f"Unmatched file dates ({len(unmatched_file_dates)}): {', '.join(sorted(unmatched_file_dates))}")
+
+    except NoSerialFoundError as e:
+        typer.echo(f"Error: {e}", err=True)
+        raise typer.Exit(1)
+
+
+@app.command()
 def create_events(
     file: Path = typer.Argument(..., help="Input FridgeTag file"),
     dry_run: bool = typer.Option(False, "--dry-run", "-n", help="Show what would be created without sending"),

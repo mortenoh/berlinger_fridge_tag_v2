@@ -5,7 +5,7 @@ from typing import Any
 
 import httpx
 
-from .dhis2_models import Enrollment, Event, TrackedEntityResult, TrackerPayload
+from .dhis2_models import Enrollment, Event, EventsResult, EventSummary, TrackedEntityResult, TrackerPayload
 
 
 class TrackedEntityNotFoundError(Exception):
@@ -76,6 +76,49 @@ class DHIS2Client:
             orgUnit=tracked_entity["orgUnit"],
             enrollments=enrollments,
         )
+
+    def get_events(self, serial: int | str) -> EventsResult:
+        """Get events for a tracked entity by serial number.
+
+        Args:
+            serial: The logger serial number.
+
+        Returns:
+            EventsResult with tracked entity UID and events filtered by program stage.
+        """
+        url = f"{self.base_url}/api/42/tracker/trackedEntities"
+        params = {
+            "filter": f"{self.SERIAL_ATTRIBUTE_UID}:like:{serial}",
+            "fields": "trackedEntity,enrollments[enrollment,events[event,occurredAt,status,programStage]]",
+            "program": self.PROGRAM_UID,
+            "orgUnitMode": "ACCESSIBLE",
+        }
+
+        with httpx.Client(auth=self.auth) as client:
+            response = client.get(url, params=params)
+            response.raise_for_status()
+            data = response.json()
+
+        tracked_entities = data.get("trackedEntities", [])
+        if not tracked_entities:
+            return EventsResult(trackedEntity=None, events=[])
+
+        tracked_entity_uid = tracked_entities[0].get("trackedEntity")
+        events: list[EventSummary] = []
+        for enrollment in tracked_entities[0].get("enrollments", []):
+            for e in enrollment.get("events", []):
+                if e.get("programStage") == self.PROGRAM_STAGE_UID:
+                    events.append(
+                        EventSummary(
+                            event=e["event"],
+                            occurredAt=e["occurredAt"],
+                            status=e["status"],
+                        )
+                    )
+
+        # Sort by date descending
+        events.sort(key=lambda x: x.occurredAt, reverse=True)
+        return EventsResult(trackedEntity=tracked_entity_uid, events=events)
 
     def create_event(self, event: Event) -> dict[str, Any]:
         """Create a new event in the tracker.

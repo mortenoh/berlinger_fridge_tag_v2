@@ -51,3 +51,18 @@ class TrackedEntityResult(BaseModel):
     trackedEntity: str
     orgUnit: str
     enrollments: list[Enrollment]
+
+
+class EventSummary(BaseModel):
+    """Summary of an event for listing."""
+
+    event: str
+    occurredAt: str
+    status: str
+
+
+class EventsResult(BaseModel):
+    """Result from get_events with tracked entity info."""
+
+    trackedEntity: str | None
+    events: list[EventSummary]
