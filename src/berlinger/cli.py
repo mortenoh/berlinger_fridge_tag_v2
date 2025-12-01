@@ -288,6 +288,9 @@ def create_events(
         serial = service.get_serial(data)
         console.print(f"Serial: [cyan]{serial}[/cyan], Records: {len(data.history.records)}")
 
+        # Get dates from input file
+        input_dates = {record.date for record in data.history.records}
+
         # Search for tracked entity
         tracked_entity = service.search_by_serial(serial)
         console.print(f"TrackedEntity: [cyan]{tracked_entity.trackedEntity}[/cyan]")
@@ -308,11 +311,19 @@ def create_events(
             existing_events.pop(dup_date, None)
 
         console.print(f"Existing events: {len(existing_result.events)}")
+
+        # Warn about duplicates - distinguish between those in input file vs not
         if duplicate_dates:
-            dup_list = ", ".join(sorted(duplicate_dates))
-            console.print(
-                f"[yellow]Warning: {len(duplicate_dates)} date(s) have duplicates, will create new: {dup_list}[/yellow]"
-            )
+            affected = duplicate_dates & input_dates
+            unaffected = duplicate_dates - input_dates
+            if affected:
+                dup_list = ", ".join(sorted(affected))
+                console.print(
+                    f"[yellow]Warning: {len(affected)} duplicate date(s) in input, will create new: {dup_list}[/yellow]"
+                )
+            if unaffected:
+                dup_list = ", ".join(sorted(unaffected))
+                console.print(f"[dim]Note: {len(unaffected)} duplicate date(s) not in input: {dup_list}[/dim]")
 
         # Build events for all history records
         events = service.build_events(tracked_entity, data, existing_events=existing_events)
