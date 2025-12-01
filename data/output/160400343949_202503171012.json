@@ -1,0 +1,204 @@
+{
+  "device": {
+    "name": "Q-tag Fridge-tag 2",
+    "version": "0.5",
+    "firmwareVersion": "4.0p1o",
+    "sensorCount": 1
+  },
+  "config": {
+    "serial": 160400343949,
+    "pcb": "BG0245101037",
+    "cid": 62000007,
+    "lot": "1792_20_08",
+    "zone": 0,
+    "alarmThresholds": [
+      {
+        "level": 0,
+        "type": "cold",
+        "temperatureLimit": -0.5,
+        "durationMinutes": 60
+      },
+      {
+        "level": 1,
+        "type": "hot",
+        "temperatureLimit": 8,
+        "durationMinutes": 600
+      }
+    ]
+  },
+  "history": {
+    "activationTimestamp": "2025-03-13 14:17",
+    "reportCreationTimestamp": "2025-03-17 10:12",
+    "recordCount": 5,
+    "records": [
+      {
+        "day": 1,
+        "date": "2025-03-17",
+        "temperature": {
+          "min": 5,
+          "minTime": "00:20",
+          "max": 7,
+          "maxTime": "07:47",
+          "avg": 5.4
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 8,
+        "verified": {
+          "am": "10:12",
+          "pm": null
+        }
+      },
+      {
+        "day": 2,
+        "date": "2025-03-16",
+        "temperature": {
+          "min": 4.9,
+          "minTime": "11:49",
+          "max": 6.4,
+          "maxTime": "08:45",
+          "avg": 5.3
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 3,
+        "date": "2025-03-15",
+        "temperature": {
+          "min": 5,
+          "minTime": "00:00",
+          "max": 6.8,
+          "maxTime": "19:08",
+          "avg": 5.4
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 4,
+        "date": "2025-03-14",
+        "temperature": {
+          "min": 5,
+          "minTime": "01:00",
+          "max": 6.8,
+          "maxTime": "07:37",
+          "avg": 5.5
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 5,
+        "date": "2025-03-13",
+        "temperature": {
+          "min": 5,
+          "minTime": "19:45",
+          "max": 13.2,
+          "maxTime": "14:33",
+          "avg": 5.6
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 14,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 16,
+        "verified": {
+          "am": null,
+          "pm": "14:18"
+        }
+      }
+    ]
+  },
+  "certificate": {
+    "version": "1",
+    "lot": "1792_20_08",
+    "issuer": "Berlinger & Co. AG",
+    "validFrom": "2020-08-21 07:39",
+    "owner": "Berlinger & Co. AG",
+    "publicKey": "d73cd26b379bd0a250d98498e15c739a..."
+  },
+  "signatures": {
+    "certificate": "6eef7b154b51a1f4a4186e76b495d43d...",
+    "data": "d0869966d3b4490dc321a40db472726b..."
+  }
+}

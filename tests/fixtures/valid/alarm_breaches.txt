@@ -1,0 +1,56 @@
+Device: Q-tag Fridge-tag 2
+Vers: 0.5
+Fw Vers: 4.0p1o
+Sensor: 1
+Conf:
+ Serial: 160400000004
+ PCB: BG0245101004
+ CID: 62000004
+ Lot: 2024_04_01
+ Zone: 0.00
+ Measurement delay: 10
+ Moving Avrg: 1
+ User Alarm Config: 0
+ User Clock Config: 1
+ Alarm Indication: 0
+ Temp unit: C
+ Alarm:
+  0:
+   T AL: -0.5, t AL: 60
+  1:
+   T AL: +8.0, t AL: 60
+ Int Sensor:
+  Timeout: 1, Offset: +0.0
+ Report history length: 60
+ Det Report: 19
+ Use ext devices: 0
+ Test Res: 1, Test TS: 2025-04-01 08:00
+Hist:
+ TS Actv: 2025-04-01 10:00
+ TS Report Creation: 2025-04-03 12:00
+ 1:
+  Date: 2025-04-03
+  Min T: +2.0, TS Min T: 03:00
+  Max T: +12.0, TS Max T: 14:30
+  Avrg T: +6.5
+  Alarm:
+   0:
+    t Acc: 0
+   1:
+    t Acc: 180, TS A: 2025-04-03 12:00, C A: 2
+  Int Sensor timeout:
+   t AccST: 0
+  Events: 144
+ 2:
+  Date: 2025-04-02
+  Min T: -2.0, TS Min T: 04:00
+  Max T: +10.0, TS Max T: 15:00
+  Avrg T: +4.0
+  Alarm:
+   0:
+    t Acc: 90, TS A: 2025-04-02 03:30, C A: 1
+   1:
+    t Acc: 120, TS A: 2025-04-02 14:00, C A: 1
+  Int Sensor timeout:
+   t AccST: 0
+  Events: 144

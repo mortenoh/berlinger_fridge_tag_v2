@@ -1,0 +1,20 @@
+Device: Fridge-tag 2
+Vers: 0.5
+Conf:
+ Serial: 100000000001
+Hist:
+ TS Actv: 2025-01-01 00:00
+ TS Report Creation: 2025-01-02 12:00
+ 1:
+  Date: 2025-01-02
+  Min T: +4.0, TS Min T: 06:00
+  Max T: +6.0, TS Max T: 12:00
+  Avrg T: +5.0
+  Alarm:
+   0:
+    t Acc: 0
+   1:
+    t Acc: 0
+  Int Sensor timeout:
+   t AccST: 0
+  Events: 0

@@ -1,0 +1,74 @@
+Device: Q-tag Fridge-tag 2
+Vers: 0.5
+Fw Vers: 4.0p1o
+Sensor: 1
+Conf:
+ Serial: 160400000005
+ PCB: BG0245101005
+ CID: 62000005
+ Lot: 2024_05_01
+ Zone: 0.00
+ Measurement delay: 10
+ Moving Avrg: 1
+ User Alarm Config: 0
+ User Clock Config: 1
+ Alarm Indication: 0
+ Temp unit: C
+ Alarm:
+  0:
+   T AL: -0.5, t AL: 60
+  1:
+   T AL: +8.0, t AL: 600
+ Int Sensor:
+  Timeout: 1, Offset: +0.0
+ Report history length: 60
+ Det Report: 19
+ Use ext devices: 0
+ Test Res: 1, Test TS: 2025-05-01 08:00
+Errors:
+ 10:
+  Err Count: 2, Err TS: 2025-05-02 14:30
+Hist:
+ TS Actv: 2025-05-01 10:00
+ TS Report Creation: 2025-05-03 18:00
+ 1:
+  Date: 2025-05-03
+  Min T: +4.5, TS Min T: 05:30
+  Max T: +6.5, TS Max T: 14:00
+  Avrg T: +5.5
+  Alarm:
+   0:
+    t Acc: 0
+   1:
+    t Acc: 0
+  Int Sensor timeout:
+   t AccST: 0
+  Events: 108
+  Checked:
+   TS AM: 08:00
+   TS PM: 16:00
+ 2:
+  Date: 2025-05-02
+  Min T: +4.0, TS Min T: 03:00
+  Max T: +7.0, TS Max T: 12:30
+  Avrg T: +5.2
+  Alarm:
+   0:
+    t Acc: 0
+   1:
+    t Acc: 0
+  Int Sensor timeout:
+   t AccST: 0
+  Events: 144
+  Checked:
+   TS AM: 09:15
+   TS PM: 17:30
+Cert:
+ Vers: 1.0
+ Lot: 2024_05_01
+ Issuer: Berlinger & Co. AG
+ Valid from: 2024-05-01 00:00
+ Owner: Berlinger & Co. AG
+ Public Key: d73cd26b379bd0a250d98498e15c739ab53594e9768b247a0713637cba30e474b4fcc1aae45f30ec7cc878c102cf9648d775670d2f93b48726a0f21d3ca71074
+Sig Cert: 6eef7b154b51a1f4a4186e76b495d43dc25cedbaab8b18486895df5d773530795679b8aa3678e511e45e28cb894bcc051dd90d13f19f699c4f42b46c4ed5d621
+Sig: d0869966d3b4490dc321a40db472726b06d9f8e2979ecbf799bbcbc7a90538a6fc3bcb52246aedc99ec82ca6baaecd1623ebecd55a8a4fbf226e7c9ddcb5b7cc

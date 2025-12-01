@@ -1,0 +1,1854 @@
+{
+  "device": {
+    "name": "Q-tag Fridge-tag 2",
+    "version": "0.5",
+    "firmwareVersion": "4.0p1o",
+    "sensorCount": 1
+  },
+  "config": {
+    "serial": 160400343951,
+    "pcb": "BG0245101004",
+    "cid": 62000007,
+    "lot": "1792_20_08",
+    "zone": 0,
+    "alarmThresholds": [
+      {
+        "level": 0,
+        "type": "cold",
+        "temperatureLimit": -0.5,
+        "durationMinutes": 60
+      },
+      {
+        "level": 1,
+        "type": "hot",
+        "temperatureLimit": 8,
+        "durationMinutes": 600
+      }
+    ]
+  },
+  "history": {
+    "activationTimestamp": "2025-04-11 21:26",
+    "reportCreationTimestamp": "2025-06-11 10:34",
+    "recordCount": 60,
+    "records": [
+      {
+        "day": 1,
+        "date": "2025-06-11",
+        "temperature": {
+          "min": 20.2,
+          "minTime": "08:33",
+          "max": 22.5,
+          "maxTime": "09:12",
+          "avg": 21.7
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 633,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 2,
+        "date": "2025-06-10",
+        "temperature": {
+          "min": 18.5,
+          "minTime": "23:10",
+          "max": 29.8,
+          "maxTime": "14:52",
+          "avg": 22
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 1407,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 3,
+        "date": "2025-06-09",
+        "temperature": {
+          "min": 20.7,
+          "minTime": "20:03",
+          "max": 27.9,
+          "maxTime": "18:00",
+          "avg": 22
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 1429,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 16,
+        "verified": {
+          "am": null,
+          "pm": "18:44"
+        }
+      },
+      {
+        "day": 4,
+        "date": "2025-06-08",
+        "temperature": {
+          "min": 16.7,
+          "minTime": "06:44",
+          "max": 23,
+          "maxTime": "19:02",
+          "avg": 20.1
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 1440,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 5,
+        "date": "2025-06-07",
+        "temperature": {
+          "min": 16.9,
+          "minTime": "12:24",
+          "max": 18.8,
+          "maxTime": "15:36",
+          "avg": 17.3
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 1440,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 6,
+        "date": "2025-06-06",
+        "temperature": {
+          "min": 16.6,
+          "minTime": "09:08",
+          "max": 19.8,
+          "maxTime": "19:20",
+          "avg": 17.5
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 1440,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 7,
+        "date": "2025-06-05",
+        "temperature": {
+          "min": 16.6,
+          "minTime": "08:14",
+          "max": 21,
+          "maxTime": "13:59",
+          "avg": 18
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 1399,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 8,
+        "date": "2025-06-04",
+        "temperature": {
+          "min": 14.7,
+          "minTime": "00:00",
+          "max": 19.1,
+          "maxTime": "22:16",
+          "avg": 15.1
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 1424,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 9,
+        "date": "2025-06-03",
+        "temperature": {
+          "min": 14.4,
+          "minTime": "08:15",
+          "max": 15,
+          "maxTime": "00:00",
+          "avg": 14.6
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 1440,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 10,
+        "date": "2025-06-02",
+        "temperature": {
+          "min": 14.3,
+          "minTime": "06:47",
+          "max": 16.9,
+          "maxTime": "18:26",
+          "avg": 15.2
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 1440,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 11,
+        "date": "2025-06-01",
+        "temperature": {
+          "min": 14.8,
+          "minTime": "23:59",
+          "max": 24.5,
+          "maxTime": "00:00",
+          "avg": 20.3
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 1440,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 12,
+        "date": "2025-05-31",
+        "temperature": {
+          "min": 23.5,
+          "minTime": "00:00",
+          "max": 30.2,
+          "maxTime": "14:40",
+          "avg": 25.6
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 1440,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 13,
+        "date": "2025-05-30",
+        "temperature": {
+          "min": 22.7,
+          "minTime": "22:13",
+          "max": 26.1,
+          "maxTime": "11:33",
+          "avg": 24.6
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 1440,
+            "triggerTime": "04:00",
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 14,
+        "date": "2025-05-29",
+        "temperature": {
+          "min": 3.8,
+          "minTime": "17:46",
+          "max": 25.1,
+          "maxTime": "23:13",
+          "avg": 9.1
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 360,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 15,
+        "date": "2025-05-28",
+        "temperature": {
+          "min": 4.1,
+          "minTime": "06:46",
+          "max": 7,
+          "maxTime": "19:48",
+          "avg": 4.9
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 16,
+        "date": "2025-05-27",
+        "temperature": {
+          "min": 5,
+          "minTime": "22:11",
+          "max": 25.5,
+          "maxTime": "05:31",
+          "avg": 11.1
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 543,
+            "triggerTime": "05:00",
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 17,
+        "date": "2025-05-26",
+        "temperature": {
+          "min": 5.1,
+          "minTime": "18:01",
+          "max": 24.8,
+          "maxTime": "05:26",
+          "avg": 12.4
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 707,
+            "triggerTime": "04:20",
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 18,
+        "date": "2025-05-25",
+        "temperature": {
+          "min": 4.6,
+          "minTime": "17:34",
+          "max": 21.6,
+          "maxTime": "23:59",
+          "avg": 9.4
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 607,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 19,
+        "date": "2025-05-24",
+        "temperature": {
+          "min": 5.1,
+          "minTime": "01:42",
+          "max": 7.5,
+          "maxTime": "18:10",
+          "avg": 6.1
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 20,
+        "date": "2025-05-23",
+        "temperature": {
+          "min": 4.4,
+          "minTime": "00:40",
+          "max": 6.7,
+          "maxTime": "20:21",
+          "avg": 5.7
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 21,
+        "date": "2025-05-22",
+        "temperature": {
+          "min": 4.5,
+          "minTime": "21:26",
+          "max": 7.2,
+          "maxTime": "18:05",
+          "avg": 5.4
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 22,
+        "date": "2025-05-21",
+        "temperature": {
+          "min": 3.7,
+          "minTime": "00:52",
+          "max": 8.9,
+          "maxTime": "20:17",
+          "avg": 5
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 70,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 23,
+        "date": "2025-05-20",
+        "temperature": {
+          "min": 3.6,
+          "minTime": "00:52",
+          "max": 7.6,
+          "maxTime": "13:39",
+          "avg": 4.4
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 24,
+        "date": "2025-05-19",
+        "temperature": {
+          "min": 3.8,
+          "minTime": "22:34",
+          "max": 6,
+          "maxTime": "18:54",
+          "avg": 4.4
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 25,
+        "date": "2025-05-18",
+        "temperature": {
+          "min": 3.5,
+          "minTime": "22:45",
+          "max": 21,
+          "maxTime": "16:20",
+          "avg": 7.6
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 429,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 26,
+        "date": "2025-05-17",
+        "temperature": {
+          "min": 4,
+          "minTime": "07:21",
+          "max": 24.6,
+          "maxTime": "15:53",
+          "avg": 12.8
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 785,
+            "triggerTime": "19:44",
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 27,
+        "date": "2025-05-16",
+        "temperature": {
+          "min": 4.1,
+          "minTime": "06:46",
+          "max": 6.5,
+          "maxTime": "19:03",
+          "avg": 5.1
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 28,
+        "date": "2025-05-15",
+        "temperature": {
+          "min": 4.4,
+          "minTime": "22:29",
+          "max": 6.3,
+          "maxTime": "19:10",
+          "avg": 5.2
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 29,
+        "date": "2025-05-14",
+        "temperature": {
+          "min": 3.7,
+          "minTime": "01:45",
+          "max": 6.2,
+          "maxTime": "19:02",
+          "avg": 4.9
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 30,
+        "date": "2025-05-13",
+        "temperature": {
+          "min": 3.8,
+          "minTime": "07:00",
+          "max": 7,
+          "maxTime": "17:57",
+          "avg": 4.8
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 31,
+        "date": "2025-05-12",
+        "temperature": {
+          "min": 2.9,
+          "minTime": "08:53",
+          "max": 4.2,
+          "maxTime": "23:42",
+          "avg": 3.5
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 32,
+        "date": "2025-05-11",
+        "temperature": {
+          "min": 3.4,
+          "minTime": "20:28",
+          "max": 24.5,
+          "maxTime": "05:26",
+          "avg": 12.3
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 727,
+            "triggerTime": "06:54",
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 33,
+        "date": "2025-05-10",
+        "temperature": {
+          "min": -1.9,
+          "minTime": "01:34",
+          "max": 24,
+          "maxTime": "23:00",
+          "avg": 11.2
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 571,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 786,
+            "triggerTime": "20:54",
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 34,
+        "date": "2025-05-09",
+        "temperature": {
+          "min": -3.3,
+          "minTime": "09:17",
+          "max": 23,
+          "maxTime": "04:34",
+          "avg": 4.9
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 892,
+            "triggerTime": "08:18",
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 423,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 35,
+        "date": "2025-05-08",
+        "temperature": {
+          "min": -3.2,
+          "minTime": "20:21",
+          "max": 20.1,
+          "maxTime": "23:56",
+          "avg": 0.6
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 1089,
+            "triggerTime": "00:29",
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 217,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 36,
+        "date": "2025-05-07",
+        "temperature": {
+          "min": -2.6,
+          "minTime": "09:02",
+          "max": 26.4,
+          "maxTime": "21:36",
+          "avg": 14.7
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 362,
+            "triggerTime": "09:00",
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 951,
+            "triggerTime": "02:20",
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 37,
+        "date": "2025-05-06",
+        "temperature": {
+          "min": -2.6,
+          "minTime": "09:15",
+          "max": 24,
+          "maxTime": "05:30",
+          "avg": 11.8
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 483,
+            "triggerTime": "08:00",
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 843,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 38,
+        "date": "2025-05-05",
+        "temperature": {
+          "min": -3.1,
+          "minTime": "07:31",
+          "max": 22.3,
+          "maxTime": "18:11",
+          "avg": 2.3
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 977,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 329,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 39,
+        "date": "2025-05-04",
+        "temperature": {
+          "min": -3.1,
+          "minTime": "22:52",
+          "max": 27.5,
+          "maxTime": "16:00",
+          "avg": 19.2
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 208,
+            "triggerTime": "21:32",
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 1206,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 40,
+        "date": "2025-05-03",
+        "temperature": {
+          "min": 15.4,
+          "minTime": "12:11",
+          "max": 26.3,
+          "maxTime": "20:33",
+          "avg": 18.5
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 1335,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 24,
+        "verified": {
+          "am": "07:10",
+          "pm": "13:34"
+        }
+      },
+      {
+        "day": 41,
+        "date": "2025-05-02",
+        "temperature": {
+          "min": 14.6,
+          "minTime": "06:51",
+          "max": 16.8,
+          "maxTime": "18:24",
+          "avg": 15.5
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 1440,
+            "triggerTime": "07:19",
+            "eventCount": 1
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 42,
+        "date": "2025-05-01",
+        "temperature": {
+          "min": 6.5,
+          "minTime": "00:13",
+          "max": 16.6,
+          "maxTime": "13:00",
+          "avg": 11.6
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 847,
+            "triggerTime": "21:19",
+            "eventCount": 1
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 43,
+        "date": "2025-04-30",
+        "temperature": {
+          "min": 6.6,
+          "minTime": "09:07",
+          "max": 8.3,
+          "maxTime": "16:46",
+          "avg": 7.2
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 61,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 44,
+        "date": "2025-04-29",
+        "temperature": {
+          "min": 6.6,
+          "minTime": "15:04",
+          "max": 8.2,
+          "maxTime": "17:30",
+          "avg": 7.2
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 16,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 45,
+        "date": "2025-04-28",
+        "temperature": {
+          "min": 6.8,
+          "minTime": "11:44",
+          "max": 8.2,
+          "maxTime": "00:46",
+          "avg": 7.3
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 18,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 46,
+        "date": "2025-04-27",
+        "temperature": {
+          "min": 6.4,
+          "minTime": "05:00",
+          "max": 10.3,
+          "maxTime": "11:37",
+          "avg": 8
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 659,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 47,
+        "date": "2025-04-26",
+        "temperature": {
+          "min": 6.5,
+          "minTime": "23:42",
+          "max": 7.6,
+          "maxTime": "01:04",
+          "avg": 7.2
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 48,
+        "date": "2025-04-25",
+        "temperature": {
+          "min": 6.1,
+          "minTime": "02:58",
+          "max": 8.1,
+          "maxTime": "20:21",
+          "avg": 6.9
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 14,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 49,
+        "date": "2025-04-24",
+        "temperature": {
+          "min": 6.1,
+          "minTime": "10:33",
+          "max": 7.8,
+          "maxTime": "23:17",
+          "avg": 6.9
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 50,
+        "date": "2025-04-23",
+        "temperature": {
+          "min": 6.1,
+          "minTime": "14:47",
+          "max": 15.6,
+          "maxTime": "16:24",
+          "avg": 7.3
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 94,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 51,
+        "date": "2025-04-22",
+        "temperature": {
+          "min": 6.2,
+          "minTime": "10:12",
+          "max": 7.8,
+          "maxTime": "00:32",
+          "avg": 6.9
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 52,
+        "date": "2025-04-21",
+        "temperature": {
+          "min": 4.4,
+          "minTime": "16:48",
+          "max": 12,
+          "maxTime": "17:21",
+          "avg": 6.3
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 19,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 53,
+        "date": "2025-04-20",
+        "temperature": {
+          "min": 2,
+          "minTime": "20:32",
+          "max": 13.4,
+          "maxTime": "00:00",
+          "avg": 10.8
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 1011,
+            "triggerTime": null,
+            "eventCount": 1
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 54,
+        "date": "2025-04-19",
+        "temperature": {
+          "min": 13.4,
+          "minTime": "13:24",
+          "max": 14.1,
+          "maxTime": "00:00",
+          "avg": 13.5
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 1440,
+            "triggerTime": null,
+            "eventCount": 1
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 55,
+        "date": "2025-04-18",
+        "temperature": {
+          "min": 14.1,
+          "minTime": "21:24",
+          "max": 14.4,
+          "maxTime": "00:00",
+          "avg": 14.3
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 1440,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 56,
+        "date": "2025-04-17",
+        "temperature": {
+          "min": 14.2,
+          "minTime": "00:01",
+          "max": 14.4,
+          "maxTime": "21:18",
+          "avg": 14.2
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 1440,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 57,
+        "date": "2025-04-16",
+        "temperature": {
+          "min": 14.1,
+          "minTime": "08:09",
+          "max": 14.3,
+          "maxTime": "00:00",
+          "avg": 14.1
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 1440,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 58,
+        "date": "2025-04-15",
+        "temperature": {
+          "min": 14.3,
+          "minTime": "15:36",
+          "max": 14.6,
+          "maxTime": "00:00",
+          "avg": 14.4
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 1440,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 59,
+        "date": "2025-04-14",
+        "temperature": {
+          "min": 14.6,
+          "minTime": "19:59",
+          "max": 15.5,
+          "maxTime": "00:39",
+          "avg": 14.9
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 1440,
+            "triggerTime": "06:36",
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      },
+      {
+        "day": 60,
+        "date": "2025-04-13",
+        "temperature": {
+          "min": 5.1,
+          "minTime": "05:20",
+          "max": 18.1,
+          "maxTime": "00:00",
+          "avg": 7.4
+        },
+        "alarms": [
+          {
+            "level": 0,
+            "type": "cold",
+            "accumulatedMinutes": 0,
+            "triggerTime": null,
+            "eventCount": 0
+          },
+          {
+            "level": 1,
+            "type": "hot",
+            "accumulatedMinutes": 265,
+            "triggerTime": null,
+            "eventCount": 0
+          }
+        ],
+        "sensorTimeoutMinutes": 0,
+        "events": 0,
+        "verified": null
+      }
+    ]
+  },
+  "certificate": {
+    "version": "1",
+    "lot": "1792_20_08",
+    "issuer": "Berlinger & Co. AG",
+    "validFrom": "2020-08-21 07:39",
+    "owner": "Berlinger & Co. AG",
+    "publicKey": "d73cd26b379bd0a250d98498e15c739a..."
+  },
+  "signatures": {
+    "certificate": "6eef7b154b51a1f4a4186e76b495d43d...",
+    "data": "fc84209e4c0789c5ca89dda1128cbd37..."
+  }
+}
