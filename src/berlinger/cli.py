@@ -118,7 +118,7 @@ def get_events(
 
         # Build table
         table = Table(title=f"Events ({len(result.events)})")
-        table.add_column("UID", style="cyan")
+        table.add_column("ID", style="cyan")
         table.add_column("Date")
         table.add_column("Status")
         table.add_column("Match", style="green")
@@ -148,7 +148,7 @@ def get_events(
 @app.command()
 def enroll(
     file: Path = typer.Argument(..., help="Input FridgeTag file"),
-    org_unit: str = typer.Option(..., "--org-unit", "-o", help="Organisation unit UID"),
+    org_unit: str = typer.Option(..., "--org-unit", "-o", help="Organisation unit ID"),
     manufacturer: str = typer.Option("", "--manufacturer", "-m", help="Appliance manufacturer"),
     model: str = typer.Option("", "--model", help="Appliance model"),
     pqs_code: str = typer.Option("", "--pqs-code", help="Appliance PQS code"),
@@ -321,7 +321,7 @@ def check_events(
             table = Table(title="Duplicate Events")
             table.add_column("Date", style="yellow")
             table.add_column("Count", justify="right")
-            table.add_column("Event UIDs", style="cyan")
+            table.add_column("Event IDs", style="cyan")
 
             for date in sorted(duplicates.keys()):
                 uids = duplicates[date]
@@ -366,7 +366,7 @@ def create_events(
         tracked_entity = service.search_by_serial(serial)
         console.print(f"TrackedEntity: [cyan]{tracked_entity.trackedEntity}[/cyan]")
 
-        # Fetch existing events and create date -> event UID mapping
+        # Fetch existing events and create date -> event ID mapping
         existing_result = service.client.get_events(serial)
         existing_events: dict[str, str] = {}
         duplicate_dates: set[str] = set()
@@ -408,7 +408,7 @@ def create_events(
         table.add_column("#", justify="right", style="dim")
         table.add_column("Action", style="bold")
         table.add_column("Date")
-        table.add_column("Event UID", style="cyan")
+        table.add_column("Event ID", style="cyan")
 
         for i, event in enumerate(events, 1):
             action = "[yellow]UPDATE[/yellow]" if event.event else "[green]CREATE[/green]"
