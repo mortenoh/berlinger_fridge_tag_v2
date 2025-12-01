@@ -98,6 +98,109 @@ def get_events(
 
 
 @app.command()
+def enroll(
+    file: Path = typer.Argument(..., help="Input FridgeTag file"),
+    org_unit: str = typer.Option(..., "--org-unit", "-o", help="Organisation unit UID"),
+    manufacturer: str = typer.Option("", "--manufacturer", "-m", help="Appliance manufacturer"),
+    model: str = typer.Option("", "--model", help="Appliance model"),
+    pqs_code: str = typer.Option("", "--pqs-code", help="Appliance PQS code"),
+    appliance_serial: str = typer.Option("", "--appliance-serial", help="Appliance manufacturer serial number"),
+    dry_run: bool = typer.Option(False, "--dry-run", "-n", help="Show what would be done without making changes"),
+) -> None:
+    """Create tracked entity with enrollment from a FridgeTag file."""
+    from datetime import date
+
+    service = DHIS2Service()
+
+    try:
+        data = service.parse_file(file)
+        serial = service.get_serial(data)
+        typer.echo(f"Serial: {serial}")
+
+        # Check if already exists
+        try:
+            tracked_entity = service.search_by_serial(serial)
+            typer.echo(f"TrackedEntity: {tracked_entity.trackedEntity} (already exists)")
+            typer.echo(f"OrgUnit: {tracked_entity.orgUnit}")
+
+            if tracked_entity.enrollments:
+                typer.echo(f"Enrollments: {len(tracked_entity.enrollments)}")
+                for enrollment in tracked_entity.enrollments:
+                    typer.echo(f"  - {enrollment.enrollment} (orgUnit: {enrollment.orgUnit})")
+            else:
+                typer.echo("Enrollments: none")
+            return
+
+        except TrackedEntityNotFoundError:
+            typer.echo("TrackedEntity: not found, will create")
+
+        enrolled_at = date.today().isoformat()
+
+        if dry_run:
+            from .dhis2_client import DHIS2Client
+            from .dhis2_models import (
+                EnrollmentPayload,
+                TrackedEntitiesPayload,
+                TrackedEntityAttribute,
+                TrackedEntityPayload,
+            )
+
+            attrs = [
+                TrackedEntityAttribute(attribute=DHIS2Client.MANUFACTURER_ATTRIBUTE_UID, value=manufacturer),
+                TrackedEntityAttribute(attribute=DHIS2Client.MODEL_ATTRIBUTE_UID, value=model),
+                TrackedEntityAttribute(attribute=DHIS2Client.PQS_CODE_ATTRIBUTE_UID, value=pqs_code),
+                TrackedEntityAttribute(attribute=DHIS2Client.APPLIANCE_SERIAL_ATTRIBUTE_UID, value=appliance_serial),
+                TrackedEntityAttribute(attribute=DHIS2Client.SERIAL_ATTRIBUTE_UID, value=str(serial)),
+            ]
+
+            enroll_payload = EnrollmentPayload(
+                program=DHIS2Client.PROGRAM_UID,
+                status="ACTIVE",
+                orgUnit=org_unit,
+                occurredAt=enrolled_at,
+                enrolledAt=enrolled_at,
+                attributes=attrs,
+                events=[],
+            )
+
+            te_payload = TrackedEntityPayload(
+                orgUnit=org_unit,
+                trackedEntityType=DHIS2Client.TRACKED_ENTITY_TYPE_UID,
+                attributes=attrs,
+                enrollments=[enroll_payload],
+            )
+
+            payload = TrackedEntitiesPayload(trackedEntities=[te_payload])
+
+            typer.echo("")
+            typer.echo("[DRY RUN] Would POST to /api/42/tracker:")
+            typer.echo(payload.model_dump_json(indent=2))
+            return
+
+        # Create tracked entity with enrollment
+        result = service.client.create_tracked_entity_with_enrollment(
+            org_unit=org_unit,
+            serial=str(serial),
+            manufacturer=manufacturer,
+            model=model,
+            pqs_code=pqs_code,
+            appliance_serial=appliance_serial,
+            enrolled_at=enrolled_at,
+        )
+
+        status = result.get("status", "UNKNOWN")
+        if status == "OK":
+            typer.echo("Success! Created tracked entity with enrollment.")
+        else:
+            typer.echo(f"Response status: {status}", err=True)
+            raise typer.Exit(1)
+
+    except NoSerialFoundError as e:
+        typer.echo(f"Error: {e}", err=True)
+        raise typer.Exit(1)
+
+
+@app.command()
 def create_events(
     file: Path = typer.Argument(..., help="Input FridgeTag file"),
     dry_run: bool = typer.Option(False, "--dry-run", "-n", help="Show what would be created without sending"),

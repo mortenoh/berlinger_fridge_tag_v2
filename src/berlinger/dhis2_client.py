@@ -5,7 +5,18 @@ from typing import Any
 
 import httpx
 
-from .dhis2_models import Enrollment, Event, EventsResult, EventSummary, TrackedEntityResult, TrackerPayload
+from .dhis2_models import (
+    Enrollment,
+    EnrollmentPayload,
+    Event,
+    EventsResult,
+    EventSummary,
+    TrackedEntitiesPayload,
+    TrackedEntityAttribute,
+    TrackedEntityPayload,
+    TrackedEntityResult,
+    TrackerPayload,
+)
 
 
 class TrackedEntityNotFoundError(Exception):
@@ -20,7 +31,14 @@ class DHIS2Client:
     # DHIS2 UIDs
     PROGRAM_UID = "EThvOOPdWdU"
     PROGRAM_STAGE_UID = "QfEdltht9gW"
-    SERIAL_ATTRIBUTE_UID = "XHdkwj2Gzi8"
+    TRACKED_ENTITY_TYPE_UID = "R3gvyQLmyX8"
+
+    # Attribute UIDs
+    SERIAL_ATTRIBUTE_UID = "XHdkwj2Gzi8"  # Logger serial number
+    MANUFACTURER_ATTRIBUTE_UID = "Dm1zMbsU05X"  # Appliance manufacturer
+    MODEL_ATTRIBUTE_UID = "juBTPqs6hyQ"  # Appliance model
+    PQS_CODE_ATTRIBUTE_UID = "iFqrxSsWh6j"  # Appliance PQS code
+    APPLIANCE_SERIAL_ATTRIBUTE_UID = "qfRUZvkBj3D"  # Appliance manufacturer serial number
 
     def __init__(
         self,
@@ -132,6 +150,71 @@ class DHIS2Client:
         url = f"{self.base_url}/api/42/tracker"
         params = {"async": "false"}
         payload = TrackerPayload(events=[event])
+
+        with httpx.Client(auth=self.auth) as client:
+            response = client.post(
+                url,
+                params=params,
+                json=payload.model_dump(),
+                headers={"Content-Type": "application/json"},
+            )
+            response.raise_for_status()
+            result: dict[str, Any] = response.json()
+            return result
+
+    def create_tracked_entity_with_enrollment(
+        self,
+        org_unit: str,
+        serial: str,
+        manufacturer: str,
+        model: str,
+        pqs_code: str,
+        appliance_serial: str,
+        enrolled_at: str,
+    ) -> dict[str, Any]:
+        """Create a new tracked entity with enrollment.
+
+        Args:
+            org_unit: Organisation unit UID.
+            serial: Logger serial number.
+            manufacturer: Appliance manufacturer.
+            model: Appliance model.
+            pqs_code: Appliance PQS code.
+            appliance_serial: Appliance manufacturer serial number.
+            enrolled_at: Enrollment date (YYYY-MM-DD).
+
+        Returns:
+            The response from the DHIS2 API.
+        """
+        attributes = [
+            TrackedEntityAttribute(attribute=self.MANUFACTURER_ATTRIBUTE_UID, value=manufacturer),
+            TrackedEntityAttribute(attribute=self.MODEL_ATTRIBUTE_UID, value=model),
+            TrackedEntityAttribute(attribute=self.PQS_CODE_ATTRIBUTE_UID, value=pqs_code),
+            TrackedEntityAttribute(attribute=self.APPLIANCE_SERIAL_ATTRIBUTE_UID, value=appliance_serial),
+            TrackedEntityAttribute(attribute=self.SERIAL_ATTRIBUTE_UID, value=serial),
+        ]
+
+        enrollment = EnrollmentPayload(
+            program=self.PROGRAM_UID,
+            status="ACTIVE",
+            orgUnit=org_unit,
+            occurredAt=enrolled_at,
+            enrolledAt=enrolled_at,
+            attributes=attributes,
+            events=[],
+        )
+
+        tracked_entity = TrackedEntityPayload(
+            orgUnit=org_unit,
+            trackedEntityType=self.TRACKED_ENTITY_TYPE_UID,
+            attributes=attributes,
+            enrollments=[enrollment],
+        )
+
+        payload = TrackedEntitiesPayload(trackedEntities=[tracked_entity])
+
+        url = f"{self.base_url}/api/42/tracker"
+        params = {"async": "false"}
 
         with httpx.Client(auth=self.auth) as client:
             response = client.post(

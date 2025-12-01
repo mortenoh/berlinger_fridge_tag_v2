@@ -66,3 +66,37 @@ class EventsResult(BaseModel):
 
     trackedEntity: str | None
     events: list[EventSummary]
+
+
+class TrackedEntityAttribute(BaseModel):
+    """Attribute for tracked entity."""
+
+    attribute: str
+    value: str
+
+
+class EnrollmentPayload(BaseModel):
+    """Enrollment to create."""
+
+    program: str
+    status: str = "ACTIVE"
+    orgUnit: str
+    occurredAt: str
+    enrolledAt: str
+    attributes: list[TrackedEntityAttribute]
+    events: list[Event] = []
+
+
+class TrackedEntityPayload(BaseModel):
+    """Tracked entity to create with enrollment."""
+
+    orgUnit: str
+    trackedEntityType: str
+    attributes: list[TrackedEntityAttribute]
+    enrollments: list[EnrollmentPayload]
+
+
+class TrackedEntitiesPayload(BaseModel):
+    """Payload for creating tracked entities."""
+
+    trackedEntities: list[TrackedEntityPayload]
