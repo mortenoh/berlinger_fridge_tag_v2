@@ -6,7 +6,7 @@ from pathlib import Path
 
 from .dhis2_client import DHIS2Client, TrackedEntityNotFoundError
 from .dhis2_models import DataValue, Event, EventStatus, TrackedEntityResult
-from .fridgetag_parser import FridgeTagData, FridgeTagParser
+from .fridgetag_parser import FridgeTagData, FridgeTagParser, HistoryRecord
 
 
 class NoSerialFoundError(Exception):
@@ -104,19 +104,48 @@ class DHIS2Service:
         """
         return self.client.search_tracked_entity(serial)
 
-    def build_event(
+    def _minutes_to_hhmm(self, minutes: int) -> str:
+        """Convert minutes to hh:mm format."""
+        hours = minutes // 60
+        mins = minutes % 60
+        return f"{hours:02d}:{mins:02d}"
+
+    def _get_alarm_minutes(self, record: HistoryRecord, level: int) -> int:
+        """Get accumulated alarm minutes for a specific level."""
+        for alarm in record.alarms:
+            if alarm.level == level:
+                return alarm.accumulated_minutes
+        return 0
+
+    def _get_alarm_condition(self, record: HistoryRecord) -> str:
+        """Determine alarm condition from a history record."""
+        cold_minutes = self._get_alarm_minutes(record, 0)
+        heat_minutes = self._get_alarm_minutes(record, 1)
+
+        if cold_minutes > 0 and heat_minutes > 0:
+            return "BOTH"
+        elif cold_minutes > 0:
+            return "COLD"
+        elif heat_minutes > 0:
+            return "HEAT"
+        return "OK"
+
+    def _get_status(self, record: HistoryRecord) -> str:
+        """Determine status from a history record."""
+        condition = self._get_alarm_condition(record)
+        return "ALARM" if condition != "OK" else "OK"
+
+    def build_event_from_record(
         self,
         tracked_entity: TrackedEntityResult,
-        data: FridgeTagData,
-        occurred_at: date | None = None,
+        record: HistoryRecord,
         status: EventStatus = EventStatus.ACTIVE,
     ) -> Event:
-        """Build an event for a tracked entity using parsed FridgeTag data.
+        """Build an event from a single history record.
 
         Args:
             tracked_entity: The tracked entity to create an event for.
-            data: Parsed FridgeTag data.
-            occurred_at: Date the event occurred (defaults to today).
+            record: A single day's history record.
             status: Event status (defaults to ACTIVE).
 
         Returns:
@@ -124,37 +153,130 @@ class DHIS2Service:
 
         Raises:
             NoEnrollmentFoundError: If no enrollment is found.
-
-        Note:
-            Currently uses placeholder values. Real implementation will create
-            one event per history record.
         """
         if not tracked_entity.enrollments:
             raise NoEnrollmentFoundError("No enrollments found for tracked entity")
 
         enrollment = tracked_entity.enrollments[0]
 
+        cold_minutes = self._get_alarm_minutes(record, 0)
+        heat_minutes = self._get_alarm_minutes(record, 1)
+
         return Event(
             orgUnit=tracked_entity.orgUnit,
-            occurredAt=(occurred_at or date.today()).isoformat(),
+            occurredAt=record.date,
             status=status,
             program=DHIS2Client.PROGRAM_UID,
             programStage=DHIS2Client.PROGRAM_STAGE_UID,
             trackedEntity=tracked_entity.trackedEntity,
             enrollment=enrollment.enrollment,
             dataValues=[
-                DataValue(dataElement="ZkLhYyo0muJ", value="00:00"),  # Total time below -0.5°C
-                DataValue(dataElement="iMon5EnL5tT", value="0"),  # Min. temp.
-                DataValue(dataElement="lMGgg93GNCj", value="OK"),  # Status
-                DataValue(dataElement="ITjXBXe4LHp", value="5"),  # Average storage temp
-                DataValue(dataElement="DEMIzoie6FB", value="00:00"),  # Total low alarm time
-                DataValue(dataElement="pXXv6fqYhhx", value="8"),  # Max. temp.
-                DataValue(dataElement="uKw4f9GjumZ", value="00:00"),  # Total time above 8.0°C
-                DataValue(dataElement="twdH0WRfqwl", value="00:00"),  # Total high alarm time
-                DataValue(dataElement="ELbtzJtt9xI", value="20"),  # Average ambient temp
-                DataValue(dataElement="XZHVruaj3BD", value="0"),  # Faults
-                DataValue(dataElement="YBjvNW66Q78", value="OK"),  # Alarm condition
+                DataValue(
+                    dataElement="ZkLhYyo0muJ",  # Total time below -0.5°C (hh:mm)
+                    value=self._minutes_to_hhmm(cold_minutes),
+                ),
+                DataValue(
+                    dataElement="iMon5EnL5tT",  # Min. temp. (°C)
+                    value=str(record.min_temp) if record.min_temp is not None else "0",
+                ),
+                DataValue(
+                    dataElement="lMGgg93GNCj",  # Status
+                    value=self._get_status(record),
+                ),
+                DataValue(
+                    dataElement="ITjXBXe4LHp",  # Average storage temperature (°C)
+                    value=str(record.avg_temp) if record.avg_temp is not None else "0",
+                ),
+                DataValue(
+                    dataElement="DEMIzoie6FB",  # Total low alarm time (hh:mm)
+                    value=self._minutes_to_hhmm(cold_minutes),
+                ),
+                DataValue(
+                    dataElement="pXXv6fqYhhx",  # Max. temp. (°C)
+                    value=str(record.max_temp) if record.max_temp is not None else "0",
+                ),
+                DataValue(
+                    dataElement="uKw4f9GjumZ",  # Total time above 8.0°C (hh:mm)
+                    value=self._minutes_to_hhmm(heat_minutes),
+                ),
+                DataValue(
+                    dataElement="twdH0WRfqwl",  # Total high alarm time (hh:mm)
+                    value=self._minutes_to_hhmm(heat_minutes),
+                ),
+                DataValue(
+                    dataElement="ELbtzJtt9xI",  # Average ambient temp (°C)
+                    value=str(record.avg_temp) if record.avg_temp is not None else "0",
+                ),
+                DataValue(
+                    dataElement="XZHVruaj3BD",  # Faults
+                    value=str(record.sensor_timeout_minutes),
+                ),
+                DataValue(
+                    dataElement="YBjvNW66Q78",  # Alarm condition
+                    value=self._get_alarm_condition(record),
+                ),
             ],
+        )
+
+    def build_events(
+        self,
+        tracked_entity: TrackedEntityResult,
+        data: FridgeTagData,
+        status: EventStatus = EventStatus.ACTIVE,
+    ) -> list[Event]:
+        """Build events for all history records.
+
+        Args:
+            tracked_entity: The tracked entity to create events for.
+            data: Parsed FridgeTag data.
+            status: Event status (defaults to ACTIVE).
+
+        Returns:
+            List of events ready to be posted.
+
+        Raises:
+            NoEnrollmentFoundError: If no enrollment is found.
+        """
+        events = []
+        for record in data.history.records:
+            event = self.build_event_from_record(tracked_entity, record, status)
+            events.append(event)
+        return events
+
+    def create_events(self, events: list[Event]) -> CreateEventResult:
+        """Create multiple events in DHIS2.
+
+        Args:
+            events: List of events to create.
+
+        Returns:
+            CreateEventResult with status and created count.
+        """
+        from .dhis2_models import TrackerPayload
+
+        url = f"{self.client.base_url}/api/42/tracker"
+        params = {"async": "false"}
+        payload = TrackerPayload(events=events)
+
+        import httpx
+
+        with httpx.Client(auth=self.client.auth) as client:
+            response = client.post(
+                url,
+                params=params,
+                json=payload.model_dump(),
+                headers={"Content-Type": "application/json"},
+            )
+            response.raise_for_status()
+            data = response.json()
+
+        status = data.get("status", "UNKNOWN")
+        stats = data.get("stats", {})
+
+        return CreateEventResult(
+            status=status,
+            created=stats.get("created", 0),
+            event_uid=None,
         )
 
     def create_event(self, event: Event) -> CreateEventResult:

@@ -46,8 +46,9 @@ def search(
 @app.command()
 def create_event(
     file: Path = typer.Argument(..., help="Input FridgeTag file"),
+    dry_run: bool = typer.Option(False, "--dry-run", "-n", help="Show what would be created without sending"),
 ):
-    """Create a DHIS2 event from a FridgeTag file."""
+    """Create DHIS2 events from a FridgeTag file (one per history record)."""
     service = DHIS2Service()
 
     try:
@@ -55,15 +56,25 @@ def create_event(
         data = service.parse_file(file)
         serial = service.get_serial(data)
         typer.echo(f"Processing serial: {serial}")
+        typer.echo(f"Found {len(data.history.records)} history record(s)")
 
         # Search for tracked entity
         tracked_entity = service.search_by_serial(serial)
         typer.echo(f"Found tracked entity: {tracked_entity.trackedEntity}")
 
-        # Build and create event with parsed data
-        event = service.build_event(tracked_entity, data)
-        typer.echo("Creating event...")
-        result = service.create_event(event)
+        # Build events for all history records
+        events = service.build_events(tracked_entity, data)
+
+        if dry_run:
+            typer.echo(f"\n[DRY RUN] Would create {len(events)} event(s):")
+            for i, event in enumerate(events, 1):
+                typer.echo(f"\n--- Event {i} (date: {event.occurredAt}) ---")
+                typer.echo(event.model_dump_json(indent=2))
+            return
+
+        # Create events
+        typer.echo(f"Creating {len(events)} event(s)...")
+        result = service.create_events(events)
 
     except NoSerialFoundError as e:
         typer.echo(f"Error: {e}", err=True)
@@ -77,8 +88,6 @@ def create_event(
 
     if result.status == "OK":
         typer.echo(f"Success! Created {result.created} event(s)")
-        if result.event_uid:
-            typer.echo(f"Event UID: {result.event_uid}")
     else:
         typer.echo(f"Response status: {result.status}", err=True)
         raise typer.Exit(1)
