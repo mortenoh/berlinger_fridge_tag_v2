@@ -22,6 +22,7 @@ class DataValue(BaseModel):
 class Event(BaseModel):
     """A DHIS2 tracker event."""
 
+    event: str | None = None  # Event UID (set when updating existing event)
     orgUnit: str
     occurredAt: str
     status: EventStatus = EventStatus.ACTIVE

@@ -219,18 +219,43 @@ def create_events(
         tracked_entity = service.search_by_serial(serial)
         typer.echo(f"Found tracked entity: {tracked_entity.trackedEntity}")
 
+        # Fetch existing events and create date -> event UID mapping
+        existing_result = service.client.get_events(serial)
+        existing_events: dict[str, str] = {}
+        duplicate_dates: set[str] = set()
+        for ev in existing_result.events:
+            date = ev.occurredAt[:10] if len(ev.occurredAt) >= 10 else ev.occurredAt
+            if date in existing_events:
+                duplicate_dates.add(date)
+            else:
+                existing_events[date] = ev.event
+
+        # Remove duplicates from mapping (will create new instead of update)
+        for dup_date in duplicate_dates:
+            existing_events.pop(dup_date, None)
+
+        typer.echo(f"Found {len(existing_result.events)} existing event(s)")
+        if duplicate_dates:
+            dup_list = ", ".join(sorted(duplicate_dates))
+            typer.echo(f"Warning: {len(duplicate_dates)} date(s) have duplicates, will create new: {dup_list}")
+
         # Build events for all history records
-        events = service.build_events(tracked_entity, data)
+        events = service.build_events(tracked_entity, data, existing_events=existing_events)
+
+        # Count updates vs creates
+        updates = sum(1 for e in events if e.event is not None)
+        creates = len(events) - updates
 
         if dry_run:
-            typer.echo(f"\n[DRY RUN] Would create {len(events)} event(s):")
+            typer.echo(f"\n[DRY RUN] Would process {len(events)} event(s): {creates} create, {updates} update")
             for i, event in enumerate(events, 1):
-                typer.echo(f"\n--- Event {i} (date: {event.occurredAt}) ---")
-                typer.echo(event.model_dump_json(indent=2))
+                action = "UPDATE" if event.event else "CREATE"
+                typer.echo(f"\n--- Event {i} ({action}, date: {event.occurredAt}) ---")
+                typer.echo(event.model_dump_json(indent=2, exclude_none=True))
             return
 
-        # Create events
-        typer.echo(f"Creating {len(events)} event(s)...")
+        # Create/update events
+        typer.echo(f"Processing {len(events)} event(s): {creates} create, {updates} update...")
         result = service.create_events(events)
 
     except NoSerialFoundError as e:
@@ -244,7 +269,7 @@ def create_events(
         raise typer.Exit(1)
 
     if result.status == "OK":
-        typer.echo(f"Success! Created {result.created} event(s)")
+        typer.echo(f"Success! Processed {len(events)} event(s): {creates} created, {updates} updated")
     else:
         typer.echo(f"Response status: {result.status}", err=True)
         raise typer.Exit(1)

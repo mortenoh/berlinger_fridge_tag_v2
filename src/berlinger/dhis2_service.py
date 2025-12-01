@@ -155,6 +155,7 @@ class DHIS2Service:
         tracked_entity: TrackedEntityResult,
         record: HistoryRecord,
         status: EventStatus = EventStatus.ACTIVE,
+        event_uid: str | None = None,
     ) -> Event:
         """Build an event from a single history record.
 
@@ -162,6 +163,7 @@ class DHIS2Service:
             tracked_entity: The tracked entity to create an event for.
             record: A single day's history record.
             status: Event status (defaults to ACTIVE).
+            event_uid: Existing event UID if updating.
 
         Returns:
             Event ready to be posted.
@@ -178,6 +180,7 @@ class DHIS2Service:
         heat_minutes = self._get_alarm_minutes(record, 1)
 
         return Event(
+            event=event_uid,
             orgUnit=tracked_entity.orgUnit,
             occurredAt=record.date,
             status=status,
@@ -238,6 +241,7 @@ class DHIS2Service:
         tracked_entity: TrackedEntityResult,
         data: FridgeTagData,
         status: EventStatus = EventStatus.ACTIVE,
+        existing_events: dict[str, str] | None = None,
     ) -> list[Event]:
         """Build events for all history records.
 
@@ -245,6 +249,7 @@ class DHIS2Service:
             tracked_entity: The tracked entity to create events for.
             data: Parsed FridgeTag data.
             status: Event status (defaults to ACTIVE).
+            existing_events: Mapping of date -> event UID for existing events.
 
         Returns:
             List of events ready to be posted.
@@ -252,9 +257,11 @@ class DHIS2Service:
         Raises:
             NoEnrollmentFoundError: If no enrollment is found.
         """
+        existing = existing_events or {}
         events = []
         for record in data.history.records:
-            event = self.build_event_from_record(tracked_entity, record, status)
+            event_uid = existing.get(record.date)
+            event = self.build_event_from_record(tracked_entity, record, status, event_uid)
             events.append(event)
         return events
 
